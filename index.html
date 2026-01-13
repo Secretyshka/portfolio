@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secretyshka | Motion & Video Production</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+        
+        body { background-color: #050505; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; margin: 0; }
+
+        /* Живой фон */
+        .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505); background-size: 400% 400%; animation: gradientMove 15s ease infinite; }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .noise { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.05; pointer-events: none; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); }
+
+        /* Навигация */
+        nav.scrolled { background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        
+        /* Стили Leifu */
+        .text-outline { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; transition: all 0.5s; }
+        .text-outline:hover { -webkit-text-stroke: 1px rgba(59, 130, 246, 0.8); }
+        .btn-leifu { background: #fff; color: #000; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+        .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4); }
+        
+        .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+        .glass-card:hover { transform: scale(1.02); border-color: rgba(255, 255, 255, 0.2); }
+
+        /* Плавность смены текста */
+        .fade-out { opacity: 0; transform: translateY(5px); transition: opacity 0.2s ease, transform 0.2s ease; }
+        .fade-in { opacity: 1; transform: translateY(0); transition: opacity 0.3s ease, transform 0.3s ease; }
+        .lang-active-text { color: #000 !important; }
+        .lang-inactive-text { color: #666 !important; }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="noise"></div>
+
+    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-6 transition-all duration-500" id="navbar">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center">
+            <a href="#" class="shrink-0 transition-transform hover:scale-105">
+                <img src="logo small.png" alt="Logo" class="h-7 md:h-9 w-auto">
+            </a>
+
+            <div class="hidden lg:flex items-center bg-white/5 border border-white/10 px-2 py-1.5 rounded-full backdrop-blur-md">
+                <a href="#vertical" class="px-6 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-vertical">Vertical</a>
+                <div class="w-[1px] h-4 bg-white/10"></div>
+                <a href="#cinematic" class="px-6 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-cinematic">Cinematic</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="#contact" class="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="btn-contact">Contact</a>
+                
+                <div class="relative flex bg-white/5 p-1 rounded-xl border border-white/10 w-[100px] h-[38px] overflow-hidden">
+                    <div id="lang-slider" class="absolute top-1 left-1 bottom-1 w-[46px] bg-white rounded-lg transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] z-0"></div>
+                    <button onclick="changeLang('en')" class="relative z-10 w-1/2 text-[10px] font-black transition-colors duration-300" id="txt-en">EN</button>
+                    <button onclick="changeLang('ru')" class="relative z-10 w-1/2 text-[10px] font-black transition-colors duration-300" id="txt-ru">RU</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="min-h-screen flex flex-col items-center justify-center relative px-6 text-center pt-20">
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+            <span class="text-[25vw] font-black opacity-[0.02] uppercase select-none tracking-tighter italic">Secret</span>
+        </div>
+
+        <div data-aos="zoom-out" data-aos-duration="1500" class="z-10">
+            <h1 class="text-6xl md:text-[120px] font-black mb-8 tracking-tighter uppercase leading-[0.85] italic">
+                <span class="block" data-i18n="hero-title-1">Video editing</span>
+                <span class="text-outline block" data-i18n="hero-title-2">For your brand</span>
+            </h1>
+            <p class="text-gray-500 text-lg md:text-xl max-w-xl mx-auto mb-12 font-medium" data-i18n="hero-desc">High-end vertical content and cinematic motion design.</p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="#vertical" class="btn-leifu px-12 py-5 rounded-full font-black uppercase tracking-widest text-xs" data-i18n="btn-work">View Projects</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1400px] mx-auto px-6 py-32">
+        <section id="vertical" class="mb-40">
+            <div class="flex justify-between items-end mb-16 border-b border-white/10 pb-8" data-aos="fade-up">
+                <h2 class="text-5xl font-black uppercase tracking-tighter" data-i18n="sec-vertical">Verticals</h2>
+                <span class="text-gray-600 font-bold uppercase tracking-widest text-xs italic">Selection 01</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div data-aos="fade-up" class="group cursor-pointer">
+                    <div class="glass-card aspect-[9/16] rounded-[2.5rem] overflow-hidden relative mb-6">
+                        <div class="absolute inset-0 bg-neutral-900 flex items-center justify-center">
+                            <i class="fa-solid fa-play text-4xl opacity-30 group-hover:opacity-100 transition-all"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-extrabold uppercase mb-2 tracking-tight" data-i18n="card-v1-title">Viral Content</h3>
+                    <p class="text-gray-500 text-sm font-bold uppercase tracking-widest" data-i18n="card-v1-desc">Editing • Sound Design</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="cinematic">
+            <div class="flex justify-between items-end mb-16 border-b border-white/10 pb-8" data-aos="fade-up">
+                <h2 class="text-5xl font-black uppercase tracking-tighter" data-i18n="sec-cinematic">Cinematic</h2>
+                <span class="text-gray-600 font-bold uppercase tracking-widest text-xs italic">Selection 02</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div data-aos="fade-right" class="group cursor-pointer">
+                    <div class="glass-card aspect-video rounded-[3rem] overflow-hidden mb-8 relative">
+                        <div class="absolute inset-0 bg-neutral-900"></div>
+                    </div>
+                    <h3 class="text-3xl font-extrabold uppercase mb-3 italic" data-i18n="card-h1-title">The X-Files Case</h3>
+                    <p class="text-gray-500 text-lg" data-i18n="card-h1-desc">Premium 3D compositing and storytelling.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="py-40 px-6 text-center">
+        <div data-aos="zoom-in" class="relative z-10">
+            <h2 class="text-6xl md:text-9xl font-black uppercase mb-12 tracking-tighter italic text-outline" data-i18n="footer-title">Let's work</h2>
+            <div class="flex justify-center gap-12">
+                <a href="https://t.me/secretyshka" class="text-5xl hover:text-blue-500 transition-all duration-300"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://x.com/secretyshka" class="text-5xl hover:text-white transition-all duration-300"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+            <p class="mt-20 text-[10px] text-gray-700 uppercase tracking-[0.5em] font-black italic">© 2026 Secretyshka Prod.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1200, once: true });
+
+        // Навигация при скролле
+        window.onscroll = function() {
+            const nav = document.getElementById('navbar');
+            if (window.pageYOffset > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        };
+
+        const translations = {
+            en: {
+                "status": "Available for projects",
+                "hero-title-1": "Video editing",
+                "hero-title-2": "For your brand",
+                "hero-desc": "Crafting viral vertical content and cinematic motion design.",
+                "btn-work": "View Projects",
+                "btn-contact": "Contact me",
+                "nav-vertical": "Vertical",
+                "nav-cinematic": "Cinematic",
+                "sec-vertical": "Verticals",
+                "card-v1-title": "Viral Content",
+                "card-v1-desc": "Editing • Sound Design",
+                "sec-cinematic": "Cinematic",
+                "card-h1-title": "The X-Files Case",
+                "card-h1-desc": "Premium 3D compositing and storytelling.",
+                "footer-title": "Let's work"
+            },
+            ru: {
+                "status": "Открыт для проектов",
+                "hero-title-1": "Видеомонтаж",
+                "hero-title-2": "Для твоего бренда",
+                "hero-desc": "Создаю виральный вертикальный контент и киношный моушн-дизайн.",
+                "btn-work": "Смотреть работы",
+                "btn-contact": "Написать мне",
+                "nav-vertical": "Вертикальные",
+                "nav-cinematic": "Горизонтальные",
+                "sec-vertical": "Вертикалки",
+                "card-v1-title": "Виральный контент",
+                "card-v1-desc": "Монтаж • Саунд-дизайн",
+                "sec-cinematic": "Кино",
+                "card-h1-title": "Кейс X-Files",
+                "card-h1-desc": "Премиальный 3D композ и сторителлинг.",
+                "footer-title": "Поработаем?"
+            }
+        };
+
+        function changeLang(lang) {
+            const slider = document.getElementById('lang-slider');
+            const btnEn = document.getElementById('txt-en');
+            const btnRu = document.getElementById('txt-ru');
+            const elements = document.querySelectorAll('[data-i18n]');
+
+            // Анимация тумблера
+            if (lang === 'en') {
+                slider.style.transform = 'translateX(0)';
+                btnEn.classList.add('lang-active-text');
+                btnRu.classList.remove('lang-active-text');
+                btnRu.classList.add('lang-inactive-text');
+            } else {
+                slider.style.transform = 'translateX(44px)';
+                btnRu.classList.add('lang-active-text');
+                btnEn.classList.remove('lang-active-text');
+                btnEn.classList.add('lang-inactive-text');
+            }
+
+            // Плавная смена текста
+            elements.forEach(el => el.classList.add('fade-out'));
+
+            setTimeout(() => {
+                elements.forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    el.textContent = translations[lang][key];
+                    el.classList.remove('fade-out');
+                    el.classList.add('fade-in');
+                });
+                
+                setTimeout(() => {
+                    elements.forEach(el => el.classList.remove('fade-in'));
+                }, 300);
+            }, 200);
+
+            localStorage.setItem('prefLang', lang);
+        }
+
+        changeLang(localStorage.getItem('prefLang') || 'en');
+    </script>
+</body>
+</html>
