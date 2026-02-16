@@ -36,7 +36,7 @@
         .lang-active-text { color: #000 !important; }
         .lang-inactive-text { color: #666 !important; }
 
-        /* Фикс для очень больших текстов на фоне */
+        /* Фикс для фонового текста */
         .bg-text-giant { font-size: 20vw; line-height: 1; pointer-events: none; user-select: none; }
     </style>
 </head>
@@ -74,7 +74,7 @@
         </div>
 
         <div data-aos="zoom-out" data-aos-duration="1500" class="z-10 w-full max-w-5xl">
-            <h1 class="text-[12vw] md:text-[110px] font-black mb-6 md:mb-8 tracking-tighter uppercase leading-[0.9] italic break-words">
+            <h1 class="text-[12vw] md:text-[110px] font-black mb-6 md:mb-8 tracking-tighter uppercase leading-[0.9] italic">
                 <span class="block" data-i18n="hero-title-1">Video editing</span>
                 <span class="text-outline block" data-i18n="hero-title-2">For your brand</span>
             </h1>
@@ -87,7 +87,7 @@
 
     <main class="max-w-[1400px] mx-auto px-6 py-20 md:py-32">
         <section id="vertical" class="mb-32 md:mb-40">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:after:mb-16 border-b border-white/10 pb-6 md:pb-8" data-aos="fade-up">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-white/10 pb-6 md:pb-8" data-aos="fade-up">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-2 md:mb-0" data-i18n="sec-vertical">Vertical</h2>
                 <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] md:text-xs italic">Selection 01</span>
             </div>
@@ -105,13 +105,13 @@
         </section>
 
         <section id="cinematic">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:after:mb-16 border-b border-white/10 pb-6 md:pb-8" data-aos="fade-up">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-white/10 pb-6 md:pb-8" data-aos="fade-up">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-2 md:mb-0" data-i18n="sec-cinematic">Horizontal</h2>
                 <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] md:text-xs italic">Selection 02</span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
                 <div data-aos="fade-right" class="group cursor-pointer">
-                    <div class="glass-card aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden mb-6 md:after:mb-8 relative">
+                    <div class="glass-card aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden mb-6 md:mb-8 relative">
                         <div class="absolute inset-0 bg-neutral-900"></div>
                     </div>
                     <h3 class="text-2xl md:text-3xl font-extrabold uppercase mb-2 md:mb-3 italic" data-i18n="card-h1-title">The X-Files Case</h3>
@@ -128,7 +128,7 @@
                 <a href="https://t.me/secretyshka" class="text-4xl md:text-5xl hover:text-blue-500 transition-all duration-300"><i class="fa-brands fa-telegram"></i></a>
                 <a href="https://x.com/secretyshka" class="text-4xl md:text-5xl hover:text-white transition-all duration-300"><i class="fa-brands fa-x-twitter"></i></a>
             </div>
-            <p class="mt-16 md:after:mt-20 text-[9px] md:text-[10px] text-gray-700 uppercase tracking-[0.5em] font-black italic px-4">© 2026 Secretyshka Prod.</p>
+            <p class="mt-16 md:mt-20 text-[9px] md:text-[10px] text-gray-700 uppercase tracking-[0.5em] font-black italic px-4">© 2026 Secretyshka Prod.</p>
         </div>
     </footer>
 
@@ -144,7 +144,6 @@
 
         const translations = {
             en: {
-                "status": "Available for projects",
                 "hero-title-1": "Video editing",
                 "hero-title-2": "For your brand",
                 "hero-desc": "Crafting viral vertical content and cinematic motion design.",
@@ -161,7 +160,6 @@
                 "footer-title": "Let's work"
             },
             ru: {
-                "status": "Открыт для проектов",
                 "hero-title-1": "Монтаж видео",
                 "hero-title-2": "Для бренда",
                 "hero-desc": "Создаю виральный вертикальный контент и киношный моушн-дизайн.",
@@ -179,12 +177,18 @@
             }
         };
 
-        function changeLang(lang) {
+        let currentLang = localStorage.getItem('prefLang') || 'en';
+
+        function changeLang(lang, force = false) {
+            if (lang === currentLang && !force) return;
+
             const slider = document.getElementById('lang-slider');
             const btnEn = document.getElementById('txt-en');
             const btnRu = document.getElementById('txt-ru');
             const elements = document.querySelectorAll('[data-i18n]');
             const isMobile = window.innerWidth < 768;
+
+            currentLang = lang;
 
             if (lang === 'en') {
                 slider.style.transform = 'translateX(0)';
@@ -199,26 +203,41 @@
                 btnEn.classList.add('lang-inactive-text');
             }
 
-            elements.forEach(el => el.classList.add('fade-out'));
-
-            setTimeout(() => {
+            if (!force) {
+                elements.forEach(el => el.classList.add('fade-out'));
+                setTimeout(() => {
+                    elements.forEach(el => {
+                        const key = el.getAttribute('data-i18n');
+                        if (translations[lang][key]) el.textContent = translations[lang][key];
+                        el.classList.remove('fade-out');
+                        el.classList.add('fade-in');
+                    });
+                    setTimeout(() => {
+                        elements.forEach(el => el.classList.remove('fade-in'));
+                    }, 300);
+                }, 200);
+            } else {
                 elements.forEach(el => {
                     const key = el.getAttribute('data-i18n');
-                    el.textContent = translations[lang][key];
-                    el.classList.remove('fade-out');
-                    el.classList.add('fade-in');
+                    if (translations[lang][key]) el.textContent = translations[lang][key];
                 });
-                
-                setTimeout(() => {
-                    elements.forEach(el => el.classList.remove('fade-in'));
-                }, 300);
-            }, 200);
+            }
 
             localStorage.setItem('prefLang', lang);
         }
 
-        changeLang(localStorage.getItem('prefLang') || 'en');
-        window.addEventListener('resize', () => changeLang(localStorage.getItem('prefLang') || 'en'));
+        document.addEventListener('DOMContentLoaded', () => {
+            changeLang(currentLang, true);
+        });
+
+        window.addEventListener('resize', () => {
+            const slider = document.getElementById('lang-slider');
+            const isMobile = window.innerWidth < 768;
+            if (currentLang === 'ru') {
+                const moveDist = isMobile ? 36 : 44;
+                slider.style.transform = `translateX(${moveDist}px)`;
+            }
+        });
     </script>
 </body>
 </html>
