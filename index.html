@@ -21,29 +21,29 @@
         /* Навигация */
         nav.scrolled { background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.5rem; padding-bottom: 0.5rem; }
         
-        /* Стили Leifu */
         .text-outline { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; transition: all 0.5s; }
         .text-outline:hover { -webkit-text-stroke: 1px rgba(59, 130, 246, 0.8); }
+        
         .btn-leifu { background: #fff; color: #000; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
         .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4); }
         
         .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
         .glass-card:hover { transform: scale(1.02); border-color: rgba(255, 255, 255, 0.2); }
 
-        /* Плавность смены текста (язык) */
+        /* Плавность смены языка */
         .fade-out { opacity: 0; transform: translateY(5px); transition: opacity 0.2s ease, transform 0.2s ease; }
         .fade-in { opacity: 1; transform: translateY(0); transition: opacity 0.3s ease, transform 0.3s ease; }
         .lang-active-text { color: #000 !important; }
         .lang-inactive-text { color: #666 !important; }
 
-        /* ЭФФЕКТ BLUR TEXT */
+        /* ЭФФЕКТ BLUR TEXT - ИСПРАВЛЕННЫЙ */
         .blur-word {
             display: inline-block;
-            filter: blur(10px);
+            white-space: pre; /* Сохраняет пробелы между словами */
+            filter: blur(12px);
             opacity: 0;
-            transform: translateY(20px);
-            transition: filter 0.8s ease, opacity 0.8s ease, transform 0.8s ease;
-            will-change: filter, opacity, transform;
+            transform: translateY(15px);
+            transition: filter 0.7s ease-out, opacity 0.7s ease-out, transform 0.7s ease-out;
         }
         .blur-word.visible {
             filter: blur(0px);
@@ -72,9 +72,8 @@
 
             <div class="flex items-center gap-3 md:gap-6">
                 <a href="#contact" class="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="btn-contact">Contact</a>
-                
                 <div class="relative flex bg-white/5 p-1 rounded-xl border border-white/10 w-[80px] md:w-[100px] h-[34px] md:h-[38px] overflow-hidden">
-                    <div id="lang-slider" class="absolute top-1 left-1 bottom-1 w-[36px] md:w-[46px] bg-white rounded-lg transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] z-0"></div>
+                    <div id="lang-slider" class="absolute top-1 left-1 bottom-1 w-[36px] md:w-[46px] bg-white rounded-lg transition-all duration-300 z-0"></div>
                     <button onclick="changeLang('en')" class="relative z-10 w-1/2 text-[9px] md:text-[10px] font-black transition-colors duration-300" id="txt-en">EN</button>
                     <button onclick="changeLang('ru')" class="relative z-10 w-1/2 text-[9px] md:text-[10px] font-black transition-colors duration-300" id="txt-ru">RU</button>
                 </div>
@@ -89,11 +88,11 @@
 
         <div class="z-10 w-full max-w-5xl">
             <h1 class="text-[12vw] md:text-[110px] font-black mb-6 md:mb-8 tracking-tighter uppercase leading-[0.9] italic">
-                <span class="block blur-text" data-i18n="hero-title-1">Video editing</span>
-                <span class="text-outline block blur-text" data-i18n="hero-title-2" data-delay="400">For your brand</span>
+                <span class="block blur-target" data-i18n="hero-title-1">Video editing</span>
+                <span class="text-outline block blur-target" data-i18n="hero-title-2" data-delay="300">For your brand</span>
             </h1>
-            <p class="text-gray-500 text-base md:text-xl max-w-xl mx-auto mb-10 md:mb-12 font-medium px-4 blur-text" data-i18n="hero-desc" data-delay="800">High-end vertical content and cinematic motion design.</p>
-            <div class="flex justify-center" data-aos="fade-up" data-aos-delay="1200">
+            <p class="text-gray-500 text-base md:text-xl max-w-xl mx-auto mb-10 md:mb-12 font-medium px-4 blur-target" data-i18n="hero-desc" data-delay="600">High-end vertical content and cinematic motion design.</p>
+            <div class="flex justify-center" data-aos="fade-up" data-aos-delay="1000">
                 <a href="#vertical" class="btn-leifu px-8 md:px-12 py-4 md:py-5 rounded-full font-black uppercase tracking-widest text-[10px] md:text-xs" data-i18n="btn-work">View Projects</a>
             </div>
         </div>
@@ -102,34 +101,16 @@
     <main class="max-w-[1400px] mx-auto px-6 py-20 md:py-32">
         <section id="vertical" class="mb-32 md:mb-40">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-white/10 pb-6 md:pb-8">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-2 md:mb-0 blur-text" data-i18n="sec-vertical">Vertical</h2>
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-2 md:mb-0 blur-target" data-i18n="sec-vertical">Vertical</h2>
                 <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] md:text-xs italic" data-aos="fade-left">Selection 01</span>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10">
                 <div data-aos="fade-up" class="group cursor-pointer">
-                    <div class="glass-card aspect-[9/16] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden relative mb-4 md:mb-6">
-                        <div class="absolute inset-0 bg-neutral-900 flex items-center justify-center">
-                            <i class="fa-solid fa-play text-3xl md:text-4xl opacity-30 group-hover:opacity-100 transition-all"></i>
-                        </div>
+                    <div class="glass-card aspect-[9/16] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden relative mb-4 md:mb-6 text-center flex items-center justify-center">
+                        <i class="fa-solid fa-play text-3xl md:text-4xl opacity-30 group-hover:opacity-100 transition-all"></i>
                     </div>
                     <h3 class="text-lg md:text-xl font-extrabold uppercase mb-1 md:mb-2 tracking-tight" data-i18n="card-v1-title">Viral Content</h3>
                     <p class="text-gray-500 text-[10px] md:text-sm font-bold uppercase tracking-widest" data-i18n="card-v1-desc">Editing • Sound Design</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="cinematic">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 border-b border-white/10 pb-6 md:pb-8">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-2 md:mb-0 blur-text" data-i18n="sec-cinematic">Horizontal</h2>
-                <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] md:text-xs italic" data-aos="fade-left">Selection 02</span>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-                <div data-aos="fade-right" class="group cursor-pointer">
-                    <div class="glass-card aspect-video rounded-[2rem] md:rounded-[3rem] overflow-hidden mb-6 md:mb-8 relative">
-                        <div class="absolute inset-0 bg-neutral-900"></div>
-                    </div>
-                    <h3 class="text-2xl md:text-3xl font-extrabold uppercase mb-2 md:mb-3 italic" data-i18n="card-h1-title">The X-Files Case</h3>
-                    <p class="text-gray-500 text-base md:text-lg px-1" data-i18n="card-h1-desc">Premium 3D compositing and storytelling.</p>
                 </div>
             </div>
         </section>
@@ -137,7 +118,7 @@
 
     <footer id="contact" class="py-24 md:py-40 px-6 text-center">
         <div class="relative z-10">
-            <h2 class="text-[12vw] md:text-[120px] font-black uppercase mb-8 md:mb-12 tracking-tighter italic text-outline leading-none blur-text" data-i18n="footer-title">Let's work</h2>
+            <h2 class="text-[12vw] md:text-[120px] font-black uppercase mb-8 md:mb-12 tracking-tighter italic text-outline leading-none blur-target" data-i18n="footer-title">Let's work</h2>
             <div class="flex justify-center gap-8 md:gap-12" data-aos="zoom-in">
                 <a href="https://t.me/secretyshka" class="text-4xl md:text-5xl hover:text-blue-500 transition-all duration-300"><i class="fa-brands fa-telegram"></i></a>
                 <a href="https://x.com/secretyshka" class="text-4xl md:text-5xl hover:text-white transition-all duration-300"><i class="fa-brands fa-x-twitter"></i></a>
@@ -149,42 +130,6 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1200, once: true });
-
-        // --- ЛОГИКА BLUR TEXT ---
-        function initBlurText() {
-            const elements = document.querySelectorAll('.blur-text');
-            
-            elements.forEach(el => {
-                const text = el.innerText;
-                const words = text.split(' ');
-                el.innerHTML = ''; // Очищаем текст
-                
-                words.forEach((word, i) => {
-                    const span = document.createElement('span');
-                    span.innerText = word + (i === words.length - 1 ? '' : ' ');
-                    span.className = 'blur-word';
-                    span.style.transitionDelay = `${(i * 100) + (parseInt(el.dataset.delay) || 0)}ms`;
-                    el.appendChild(span);
-                });
-
-                // Наблюдатель за появлением в зоне видимости
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            el.querySelectorAll('.blur-word').forEach(word => word.classList.add('visible'));
-                        }
-                    });
-                }, { threshold: 0.1 });
-                
-                observer.observe(el);
-            });
-        }
-
-        window.onscroll = function() {
-            const nav = document.getElementById('navbar');
-            if (window.pageYOffset > 50) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
-        };
 
         const translations = {
             en: {
@@ -198,9 +143,6 @@
                 "sec-vertical": "Vertical",
                 "card-v1-title": "Viral Content",
                 "card-v1-desc": "Editing • Sound Design",
-                "sec-cinematic": "Horizontal",
-                "card-h1-title": "The X-Files Case",
-                "card-h1-desc": "Premium 3D compositing and storytelling.",
                 "footer-title": "Let's work"
             },
             ru: {
@@ -214,14 +156,30 @@
                 "sec-vertical": "Вертикалки",
                 "card-v1-title": "Виральный контент",
                 "card-v1-desc": "Монтаж • Саунд-дизайн",
-                "sec-cinematic": "Горизонталки",
-                "card-h1-title": "Кейс X-Files",
-                "card-h1-desc": "Премиальный 3D композ и сторителлинг.",
                 "footer-title": "Поработаем?"
             }
         };
 
         let currentLang = localStorage.getItem('prefLang') || 'en';
+
+        // ПРИМЕНЕНИЕ ЭФФЕКТА РАЗМЫТИЯ К ТЕКСТУ
+        function applyBlurEffect(el, text) {
+            const words = text.split(' ');
+            el.innerHTML = '';
+            const baseDelay = parseInt(el.dataset.delay) || 0;
+
+            words.forEach((word, i) => {
+                const span = document.createElement('span');
+                // Добавляем пробел после слова, если оно не последнее
+                span.textContent = word + (i === words.length - 1 ? '' : ' ');
+                span.className = 'blur-word';
+                span.style.transitionDelay = `${baseDelay + (i * 80)}ms`;
+                el.appendChild(span);
+                
+                // Запуск анимации через минимальный таймаут
+                setTimeout(() => span.classList.add('visible'), 50);
+            });
+        }
 
         function changeLang(lang, force = false) {
             if (lang === currentLang && !force) return;
@@ -233,7 +191,9 @@
             const isMobile = window.innerWidth < 768;
 
             currentLang = lang;
+            localStorage.setItem('prefLang', lang);
 
+            // Тумблер
             if (lang === 'en') {
                 slider.style.transform = 'translateX(0)';
                 btnEn.classList.add('lang-active-text');
@@ -247,46 +207,33 @@
                 btnEn.classList.add('lang-inactive-text');
             }
 
-            // Плавная смена языка
-            elements.forEach(el => el.classList.add('fade-out'));
-            setTimeout(() => {
-                elements.forEach(el => {
-                    const key = el.getAttribute('data-i18n');
-                    if (translations[lang][key]) el.textContent = translations[lang][key];
-                    el.classList.remove('fade-out');
-                    el.classList.add('fade-in');
-                    
-                    // Переинициализируем Blur эффект для нового текста
-                    if (el.classList.contains('blur-text')) {
-                        el.innerHTML = ''; // Очистка
-                        const words = translations[lang][key].split(' ');
-                        words.forEach((word, i) => {
-                            const span = document.createElement('span');
-                            span.innerText = word + (i === words.length - 1 ? '' : ' ');
-                            span.className = 'blur-word visible'; // Сразу ставим visible, чтобы при смене языка не моргало
-                            el.appendChild(span);
-                        });
-                    }
-                });
-                setTimeout(() => {
-                    elements.forEach(el => el.classList.remove('fade-in'));
-                }, 300);
-            }, 200);
+            // Перевод и эффект
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const text = translations[lang][key];
 
-            localStorage.setItem('prefLang', lang);
+                if (el.classList.contains('blur-target')) {
+                    applyBlurEffect(el, text);
+                } else {
+                    el.textContent = text;
+                }
+            });
         }
 
+        window.onscroll = function() {
+            const nav = document.getElementById('navbar');
+            if (window.pageYOffset > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
-            initBlurText(); // Запуск блюра
             changeLang(currentLang, true);
         });
 
         window.addEventListener('resize', () => {
-            const slider = document.getElementById('lang-slider');
-            const isMobile = window.innerWidth < 768;
             if (currentLang === 'ru') {
-                const moveDist = isMobile ? 36 : 44;
-                slider.style.transform = `translateX(${moveDist}px)`;
+                const isMobile = window.innerWidth < 768;
+                document.getElementById('lang-slider').style.transform = `translateX(${isMobile ? 36 : 44}px)`;
             }
         });
     </script>
