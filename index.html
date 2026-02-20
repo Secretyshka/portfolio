@@ -27,13 +27,14 @@
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Это уберет полосы, сообщая Safari основной цвет */
+        /* Safari видит этот цвет как основной для системы */
         html {
             background-color: #050505;
         }
 
         body { 
-            background-color: #050505; 
+            /* Делаем body прозрачным, чтобы видеть анимированный фон сзади */
+            background-color: transparent; 
             color: #ffffff; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             overflow-x: hidden; 
@@ -43,24 +44,20 @@
             min-height: 100vh;
         }
 
-        /* Твой переливающийся фон */
+        /* Анимированный фон теперь принудительно на самом нижнем слое */
         .animated-bg { 
             position: fixed; 
             top: 0; 
             left: 0; 
-            width: 100%; 
-            height: 100%; 
+            width: 100vw; 
+            height: 100vh; 
             z-index: -2; 
             background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505); 
             background-size: 400% 400%; 
             animation: gradientMove 15s ease infinite; 
         }
-        @keyframes gradientMove { 
-            0% { background-position: 0% 50%; } 
-            50% { background-position: 100% 50%; } 
-            100% { background-position: 0% 50%; } 
-        }
-        
+
+        /* Шум чуть выше фона, но под контентом */
         .noise { 
             position: fixed; 
             top: 0; 
@@ -71,6 +68,12 @@
             opacity: 0.05; 
             pointer-events: none; 
             background-image: url('https://grainy-gradients.vercel.app/noise.svg'); 
+        }
+
+        @keyframes gradientMove { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
         }
 
         #navbar {
@@ -101,8 +104,7 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
-        #navbar img { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); height: 32px; display: block; }
-        #navbar.scrolled img { transform: scale(0.9); }
+        #navbar img { height: 32px; display: block; }
         
         section { scroll-margin-top: 120px; }
 
@@ -113,22 +115,20 @@
             filter: blur(12px); 
             opacity: 0; 
             transform: translateY(15px); 
-            transition: filter 0.8s ease-out, opacity 0.8s ease-out, transform 0.8s ease-out, color 0.6s ease, text-shadow 0.6s ease; 
+            transition: filter 0.8s ease-out, opacity 0.8s ease-out, transform 0.8s ease-out, color 0.6s ease; 
         }
         .blur-word.visible { filter: blur(0px); opacity: 1; transform: translateY(0); }
-        .blur-target:hover .blur-word { color: #3b82f6; text-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
         
-        .text-outline .blur-word { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; transition: all 0.6s ease; }
-        .text-outline:hover .blur-word { -webkit-text-stroke: 1px #3b82f6; color: transparent; text-shadow: 0 0 15px rgba(59, 130, 246, 0.3); }
+        .text-outline .blur-word { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; }
 
-        .btn-leifu { background: #fff; color: #000; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
-        .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4); }
+        .btn-leifu { background: #fff; color: #000; transition: all 0.4s ease; }
+        .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); }
         
         .glass-card { 
             background: rgba(255, 255, 255, 0.02); 
             backdrop-filter: blur(15px); 
             border: 1px solid rgba(255, 255, 255, 0.05); 
-            transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1); 
+            transition: 0.5s ease; 
             overflow: hidden; 
         }
         .glass-card:hover { transform: scale(1.02); border-color: rgba(255, 255, 255, 0.2); }
@@ -164,15 +164,10 @@
             align-items: center;
             gap: 12px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.4s ease;
             margin-bottom: 2rem;
             font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 0.05em;
         }
-        .email-pill:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; transform: translateY(-2px); }
-        .social-link { transition: all 0.3s ease; color: white; display: inline-flex; align-items: center; justify-content: center; }
-        .social-link:hover { color: #3b82f6; transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); }
     </style>
 </head>
 <body>
@@ -188,13 +183,13 @@
             </a>
 
             <div class="hidden lg:flex items-center bg-white/5 border border-white/10 px-1 py-1 rounded-full backdrop-blur-sm">
-                <a href="#horizontal" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-horizontal">Horizontal</a>
+                <a href="#horizontal" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="nav-horizontal">Horizontal</a>
                 <div class="w-[1px] h-3 bg-white/10"></div>
-                <a href="#vertical" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-vertical">Vertical</a>
+                <a href="#vertical" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="nav-vertical">Vertical</a>
             </div>
 
             <div class="flex items-center gap-4 md:gap-6">
-                <a href="#contact" class="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="btn-contact-nav">Contact</a>
+                <a href="#contact" class="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="btn-contact-nav">Contact</a>
                 <div class="relative flex bg-white/5 p-1 rounded-xl border border-white/10 w-[80px] md:w-[90px] h-[32px] md:h-[36px] overflow-hidden">
                     <div id="lang-slider" class="absolute top-1 left-1 bottom-1 w-[36px] md:w-[42px] bg-white rounded-lg z-0"></div>
                     <button onclick="changeLang('en')" class="relative z-10 w-1/2 text-[9px] md:text-[10px] font-black transition-colors duration-300" id="txt-en">EN</button>
@@ -208,11 +203,11 @@
         <div class="z-10 w-full max-w-5xl">
             <h1 class="text-[12vw] md:text-[110px] font-black mb-6 md:mb-8 tracking-tighter uppercase leading-[0.9] italic">
                 <span class="block blur-target" data-i18n="hero-title-1">Video editing</span>
-                <span class="text-outline block blur-target" data-i18n="hero-title-2" data-delay="300">For your brand</span>
+                <span class="text-outline block blur-target" data-i18n="hero-title-2">For your brand</span>
             </h1>
-            <p class="text-gray-500 text-base md:text-xl max-w-xl mx-auto mb-10 md:mb-12 font-medium px-4 blur-target" data-i18n="hero-desc" data-delay="600">High-end vertical content and cinematic motion design.</p>
+            <p class="text-gray-500 text-base md:text-xl max-w-xl mx-auto mb-10 md:mb-12 font-medium px-4 blur-target" data-i18n="hero-desc">High-end vertical content and cinematic motion design.</p>
             
-            <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up" data-aos-delay="1000">
+            <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up">
                 <a href="#horizontal" class="btn-leifu px-10 py-5 rounded-full font-black uppercase tracking-widest text-[10px] md:text-xs" data-i18n="btn-work">View Projects</a>
                 <a href="#contact" class="px-10 py-5 rounded-full font-black uppercase tracking-widest text-[10px] md:text-xs border border-white/20 hover:border-white transition-all" data-i18n="btn-contact-main">Contact Me</a>
             </div>
@@ -333,7 +328,6 @@
             if (lang === currentLang && !force) return;
             currentLang = lang;
             localStorage.setItem('prefLang', lang);
-
             const moveDist = isMobile ? 36 : 42;
             slider.style.transform = (lang === 'en') ? 'translateX(0)' : `translateX(${moveDist}px)`;
             
