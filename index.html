@@ -23,12 +23,11 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
         
         :root {
-            /* Переменные для безопасных зон безрамочных iPhone */
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Убираем черные прямоугольники в Safari жестким цветом фона */
+        /* Это уберет полосы, сообщая Safari основной цвет */
         html {
             background-color: #050505;
         }
@@ -39,12 +38,12 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             overflow-x: hidden; 
             margin: 0;
-            /* Адаптивные отступы под системные элементы iOS */
             padding-top: var(--safe-top);
             padding-bottom: var(--safe-bottom);
             min-height: 100vh;
         }
 
+        /* Твой переливающийся фон */
         .animated-bg { 
             position: fixed; 
             top: 0; 
@@ -56,7 +55,11 @@
             background-size: 400% 400%; 
             animation: gradientMove 15s ease infinite; 
         }
-        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes gradientMove { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
+        }
         
         .noise { 
             position: fixed; 
@@ -217,7 +220,6 @@
     </header>
 
     <main class="max-w-[1400px] mx-auto px-6 py-20 md:py-32">
-        
         <section id="horizontal" class="mb-32">
             <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-8">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-horizontal">Horizontal</h2>
@@ -255,7 +257,6 @@
                 </div>
             </div>
         </section>
-
     </main>
 
     <footer id="contact" class="py-24 px-6 text-center border-t border-white/5">
