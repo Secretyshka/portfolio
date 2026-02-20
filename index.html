@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#050505">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Secretyshka | Portfolio</title>
+    
+    <title>Secretyshka | Motion & Video Production</title>
     
     <link rel="icon" type="image/png" href="./favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
@@ -20,8 +23,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
         
         :root {
+            /* Переменные для безопасных зон безрамочных iPhone */
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* Убираем черные прямоугольники в Safari жестким цветом фона */
+        html {
+            background-color: #050505;
         }
 
         body { 
@@ -30,13 +39,36 @@
             font-family: 'Plus Jakarta Sans', sans-serif; 
             overflow-x: hidden; 
             margin: 0;
+            /* Адаптивные отступы под системные элементы iOS */
             padding-top: var(--safe-top);
             padding-bottom: var(--safe-bottom);
+            min-height: 100vh;
         }
 
-        .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505); background-size: 400% 400%; animation: gradientMove 15s ease infinite; }
+        .animated-bg { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -2; 
+            background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505); 
+            background-size: 400% 400%; 
+            animation: gradientMove 15s ease infinite; 
+        }
         @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .noise { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.05; pointer-events: none; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); }
+        
+        .noise { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1; 
+            opacity: 0.05; 
+            pointer-events: none; 
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg'); 
+        }
 
         #navbar {
             position: fixed;
@@ -89,10 +121,32 @@
         .btn-leifu { background: #fff; color: #000; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
         .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4); }
         
-        .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1); overflow: hidden; }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: blur(15px); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1); 
+            overflow: hidden; 
+        }
         .glass-card:hover { transform: scale(1.02); border-color: rgba(255, 255, 255, 0.2); }
 
-        #backToTop { position: fixed; bottom: calc(30px + var(--safe-bottom)); right: 30px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; z-index: 99; opacity: 0; visibility: hidden; transition: 0.4s; }
+        #backToTop { 
+            position: fixed; 
+            bottom: calc(30px + var(--safe-bottom)); 
+            right: 30px; 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            background: #fff; 
+            color: #000; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 99; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: 0.4s; 
+        }
         #backToTop.show { opacity: 1; visibility: visible; }
         
         #lang-slider { will-change: transform; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
