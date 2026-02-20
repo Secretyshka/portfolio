@@ -27,29 +27,37 @@
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        /* ВАЖНО: Применяем градиент к html, чтобы Safari закрашивал 
-           зоны оверскролла (когда тянешь страницу выше/ниже края)
-        */
-        html {
-            background: #050505;
-            /* Растягиваем на всю высоту и фиксируем */
-            min-height: 100vh;
-            background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505);
-            background-size: 400% 400%;
-            animation: gradientMove 15s ease infinite;
-            background-attachment: fixed;
+        /* Страховка для Safari: если фон не успеет прогрузиться, будет черный, а не белый */
+        html, body {
+            background-color: #050505;
+            margin: 0;
+            padding: 0;
+            height: 100%;
         }
 
         body { 
-            margin: 0;
             color: #ffffff; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             overflow-x: hidden; 
-            /* Делаем фон прозрачным, так как он уже есть у html */
-            background: transparent;
             padding-top: var(--safe-top);
             padding-bottom: var(--safe-bottom);
-            min-height: 100vh;
+        }
+
+        /* Анимированный фон: отдельный слой с аппаратным ускорением */
+        .animated-bg { 
+            position: fixed; 
+            top: -50px; /* Небольшой вылет за границы, чтобы скрыть артефакты краев */
+            left: -50px; 
+            right: -50px;
+            bottom: -50px;
+            z-index: -2; 
+            background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505); 
+            background-size: 400% 400%; 
+            animation: gradientMove 15s ease infinite; 
+            /* Магия для iOS: убирает белые вспышки и лаги */
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            will-change: background-position;
         }
 
         @keyframes gradientMove { 
@@ -58,23 +66,16 @@
             100% { background-position: 0% 50%; } 
         }
 
-        /* Шум фиксируем поверх всего фона */
         .noise { 
             position: fixed; 
             top: 0; 
             left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            z-index: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1; 
             opacity: 0.05; 
             pointer-events: none; 
             background-image: url('https://grainy-gradients.vercel.app/noise.svg'); 
-        }
-
-        /* Весь контент поднимаем над шумом */
-        nav, header, main, footer {
-            position: relative;
-            z-index: 10;
         }
 
         #navbar {
@@ -170,6 +171,7 @@
     </style>
 </head>
 <body>
+    <div class="animated-bg"></div>
     <div class="noise"></div>
 
     <a href="#" id="backToTop"><i class="fa-solid fa-arrow-up"></i></a>
