@@ -2,8 +2,9 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secretyshka | Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Secretyshka | Motion & Video Production</title>
     
     <link rel="icon" type="image/png" href="./favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
@@ -17,16 +18,30 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
-        body { background-color: #050505; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; margin: 0; }
+        
+        /* Исправление отступов для безрамочных экранов */
+        :root {
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+
+        body { 
+            background-color: #050505; 
+            color: #ffffff; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden; 
+            margin: 0;
+            padding-top: var(--safe-top);
+            padding-bottom: var(--safe-bottom);
+        }
 
         .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505); background-size: 400% 400%; animation: gradientMove 15s ease infinite; }
         @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .noise { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.05; pointer-events: none; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); }
 
-        /* Стабилизированный хедер */
         #navbar {
             position: fixed;
-            top: 24px;
+            top: calc(24px + var(--safe-top));
             left: 50%;
             transform: translateX(-50%);
             width: 95%;
@@ -44,7 +59,7 @@
         }
 
         #navbar.scrolled {
-            top: 12px;
+            top: calc(12px + var(--safe-top));
             width: 90%;
             padding: 10px 24px;
             background: rgba(5, 5, 5, 0.65);
@@ -78,7 +93,7 @@
         .glass-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1); overflow: hidden; }
         .glass-card:hover { transform: scale(1.02); border-color: rgba(255, 255, 255, 0.2); }
 
-        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; z-index: 99; opacity: 0; visibility: hidden; transition: 0.4s; }
+        #backToTop { position: fixed; bottom: calc(30px + var(--safe-bottom)); right: 30px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; z-index: 99; opacity: 0; visibility: hidden; transition: 0.4s; }
         #backToTop.show { opacity: 1; visibility: visible; }
         
         #lang-slider { will-change: transform; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -134,9 +149,6 @@
     </nav>
 
     <header class="min-h-screen flex flex-col items-center justify-center relative px-6 text-center pt-20">
-        <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
-            <span class="bg-text-giant font-black opacity-[0.02] uppercase italic">editor</span>
-        </div>
         <div class="z-10 w-full max-w-5xl">
             <h1 class="text-[12vw] md:text-[110px] font-black mb-6 md:mb-8 tracking-tighter uppercase leading-[0.9] italic">
                 <span class="block blur-target" data-i18n="hero-title-1">Video editing</span>
@@ -163,15 +175,15 @@
                     <div class="glass-card aspect-video rounded-[2.5rem] flex items-center justify-center bg-neutral-900/40 mb-8">
                         <i class="fa-solid fa-play text-4xl opacity-30 group-hover:opacity-100 transition-all"></i>
                     </div>
-                    <h3 class="text-2xl font-extrabold uppercase mb-3 italic blur-target" data-i18n="card-h1-title">The X-Files Case</h3>
-                    <p class="text-gray-500 text-lg blur-target" data-i18n="card-h1-desc">Premium 3D compositing and storytelling.</p>
+                    <h3 class="text-2xl font-extrabold uppercase mb-2 italic blur-target" data-i18n="card-h1-title">The X-Files Case</h3>
+                    <p class="text-gray-500 text-xs font-bold uppercase tracking-widest blur-target" data-i18n="card-v-desc">Editing • Sound Design</p>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="200" class="group cursor-pointer">
                     <div class="glass-card aspect-video rounded-[2.5rem] flex items-center justify-center bg-neutral-900/40 mb-8">
                         <i class="fa-solid fa-play text-4xl opacity-30 group-hover:opacity-100 transition-all"></i>
                     </div>
-                    <h3 class="text-2xl font-extrabold uppercase mb-3 italic blur-target" data-i18n="card-h2-title">Brand Identity</h3>
-                    <p class="text-gray-500 text-lg blur-target" data-i18n="card-h2-desc">Cinematic motion and visual effects.</p>
+                    <h3 class="text-2xl font-extrabold uppercase mb-2 italic blur-target" data-i18n="card-h2-title">Brand Identity</h3>
+                    <p class="text-gray-500 text-xs font-bold uppercase tracking-widest blur-target" data-i18n="card-v-desc">Editing • Sound Design</p>
                 </div>
             </div>
         </section>
@@ -242,16 +254,14 @@
                 "hero-title-1": "Video editing", "hero-title-2": "For your brand", "hero-desc": "High-end vertical content and cinematic motion design.",
                 "btn-work": "View Projects", "btn-contact-main": "Contact Me", "sec-vertical": "Vertical", "sec-horizontal": "Horizontal",
                 "card-v1-title": "Viral Content", "card-v2-title": "Dynamic Shorts", "card-v-desc": "Editing • Sound Design",
-                "card-h1-title": "The X-Files Case", "card-h1-desc": "Premium 3D compositing and storytelling.",
-                "card-h2-title": "Brand Identity", "card-h2-desc": "Cinematic motion and visual effects.", "footer-title": "Let's work"
+                "card-h1-title": "The X-Files Case", "card-h2-title": "Brand Identity", "footer-title": "Let's work"
             },
             ru: {
                 "nav-vertical": "Вертикальные", "nav-horizontal": "Горизонтальные", "btn-contact-nav": "Контакты",
-                "hero-title-1": "Монтаж видео", "hero-title-2": "Для бренда", "hero-desc": "Создаю увлекающий вертикальный контент и профессиональный моушн-дизайн.",
+                "hero-title-1": "Монтаж видео", "hero-title-2": "Для бренда", "hero-desc": "Создаю виральный вертикальный контент и профессиональный моушн-дизайн.",
                 "btn-work": "Смотреть работы", "btn-contact-main": "Связаться", "sec-vertical": "Вертикальные", "sec-horizontal": "Горизонтальные",
                 "card-v1-title": "Виральный контент", "card-v2-title": "Динамичные Reels", "card-v-desc": "Монтаж • Саунд-дизайн",
-                "card-h1-title": "Кейс X-Files", "card-h1-desc": "Премиальный 3D композ и сторителлинг.",
-                "card-h2-title": "Бренд-айдентика", "card-h2-desc": "Киношный моушн и визуальные эффекты.", "footer-title": "Поработаем?"
+                "card-h1-title": "Кейс X-Files", "card-h2-title": "Бренд-айдентика", "footer-title": "Поработаем?"
             }
         };
 
