@@ -27,7 +27,6 @@
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Стабильный фон без дырок */
         html { background-color: #050505; height: 100%; }
 
         body { 
@@ -53,7 +52,7 @@
 
         nav, header, main, footer { position: relative; z-index: 10; }
 
-        /* Стили видео-карточек */
+        /* Карточки видео без текста */
         .video-card {
             position: relative;
             cursor: pointer;
@@ -93,7 +92,7 @@
 
         .video-card:hover .play-icon { opacity: 1; }
 
-        /* Модальное окно плеера */
+        /* Модальное окно с Glow-эффектом */
         #video-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 2000; display: none; align-items: center; justify-content: center;
@@ -109,27 +108,51 @@
             -webkit-backdrop-filter: blur(15px);
         }
 
+        .modal-content-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        /* Тот самый "светящийся" фон за видео */
+        .modal-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 105%; height: 105%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 50%, transparent 70%);
+            filter: blur(40px);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        #video-modal.active .modal-glow { opacity: 1; }
+
         .modal-content {
-            position: relative; z-index: 10;
-            width: 90%; max-width: 1000px;
+            width: 100%;
             aspect-ratio: 16/9;
             background: #000;
             border-radius: 24px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         #video-modal.active .modal-content { transform: scale(1); }
 
-        .modal-content.vertical { max-width: 400px; aspect-ratio: 9/16; }
+        .modal-content-wrapper.vertical { max-width: 400px; }
+        .modal-content-wrapper.vertical .modal-content { aspect-ratio: 9/16; }
 
         .close-modal {
-            position: absolute; top: 20px; right: 20px;
-            width: 40px; height: 40px; background: rgba(255,255,255,0.1);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: #fff; cursor: pointer; z-index: 100; transition: 0.3s;
+            position: absolute; top: -50px; right: 0;
+            color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s;
+            font-size: 24px;
         }
-        .close-modal:hover { background: #fff; color: #000; }
+        .close-modal:hover { color: #fff; }
 
         /* Навигация */
         #navbar {
@@ -169,9 +192,12 @@
 
     <div id="video-modal">
         <div class="modal-overlay" onclick="closeVideo()"></div>
-        <div class="close-modal" onclick="closeVideo()"><i class="fa-solid fa-xmark"></i></div>
-        <div class="modal-content" id="modal-container">
-            <iframe id="video-player" width="100%" height="100%" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="modal-content-wrapper" id="modal-wrapper">
+            <div class="modal-glow"></div>
+            <div class="close-modal" onclick="closeVideo()"><i class="fa-solid fa-xmark"></i></div>
+            <div class="modal-content">
+                <iframe id="video-player" width="100%" height="100%" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 
@@ -218,18 +244,12 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div data-aos="fade-up" class="video-card aspect-video group" onclick="openVideo('YOUTUBE_ID_1', 'horizontal')">
-                    <img src="./hor1.png" alt="Project 1">
+                    <img src="./hor1.png" alt="Project">
                     <div class="play-icon"><i class="fa-solid fa-play text-white"></i></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                        <p class="text-[10px] font-black uppercase tracking-[0.2em]">Cinematic Edit</p>
-                    </div>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="200" class="video-card aspect-video group" onclick="openVideo('YOUTUBE_ID_2', 'horizontal')">
-                    <img src="./hor2.png" alt="Project 2">
+                    <img src="./hor2.png" alt="Project">
                     <div class="play-icon"><i class="fa-solid fa-play text-white"></i></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                        <p class="text-[10px] font-black uppercase tracking-[0.2em]">Motion Design</p>
-                    </div>
                 </div>
             </div>
         </section>
@@ -241,18 +261,12 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-3xl w-full">
                 <div data-aos="fade-up" class="video-card aspect-[9/16] group" onclick="openVideo('YOUTUBE_ID_3', 'vertical')">
-                    <img src="./vert1.png" alt="Project 3">
+                    <img src="./vert1.png" alt="Project">
                     <div class="play-icon"><i class="fa-solid fa-play text-white text-2xl"></i></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 text-center">
-                        <p class="text-[10px] font-black uppercase tracking-[0.2em]">Reels / TikTok</p>
-                    </div>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="200" class="video-card aspect-[9/16] group" onclick="openVideo('YOUTUBE_ID_4', 'vertical')">
-                    <img src="./vert2.png" alt="Project 4">
+                    <img src="./vert2.png" alt="Project">
                     <div class="play-icon"><i class="fa-solid fa-play text-white text-2xl"></i></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 text-center">
-                        <p class="text-[10px] font-black uppercase tracking-[0.2em]">Shorts Content</p>
-                    </div>
                 </div>
             </div>
         </section>
@@ -280,10 +294,10 @@
         function openVideo(id, type) {
             const modal = document.getElementById('video-modal');
             const player = document.getElementById('video-player');
-            const container = document.getElementById('modal-container');
+            const wrapper = document.getElementById('modal-wrapper');
             player.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-            if (type === 'vertical') container.classList.add('vertical');
-            else container.classList.remove('vertical');
+            if (type === 'vertical') wrapper.classList.add('vertical');
+            else wrapper.classList.remove('vertical');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('active'), 10);
             document.body.style.overflow = 'hidden';
