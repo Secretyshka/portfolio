@@ -90,7 +90,7 @@
 
         .video-card:hover .play-icon { opacity: 1; }
 
-        /* Плеер */
+        /* Модальное окно плеера */
         #video-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 2000; display: none; align-items: center; justify-content: center;
@@ -196,12 +196,16 @@
 
     <nav id="navbar">
         <div class="flex justify-between items-center w-full">
-            <a href="#" class="shrink-0 transition-opacity hover:opacity-70"><img src="./logo small.png" alt="Logo"></a>
+            <a href="#" class="block h-8 transition-opacity hover:opacity-70">
+                <img src="./logo small.png" alt="Logo" class="h-full w-auto block">
+            </a>
+            
             <div class="hidden lg:flex items-center bg-white/5 border border-white/10 px-1 py-1 rounded-full backdrop-blur-sm">
                 <a href="#horizontal" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-horizontal">Horizontal</a>
                 <div class="w-[1px] h-3 bg-white/10"></div>
                 <a href="#vertical" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-vertical">Vertical</a>
             </div>
+
             <div class="flex items-center gap-4 md:gap-6">
                 <a href="#contact" class="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="btn-contact-nav">Contact</a>
                 <div class="relative flex bg-white/5 p-1 rounded-xl border border-white/10 w-[80px] md:w-[90px] h-[32px] md:h-[36px] overflow-hidden">
