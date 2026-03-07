@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <title>Secretyshka | Motion & Video Production</title>
+    <title>Secretyshka | Portfolio</title>
     
     <link rel="icon" type="image/png" href="./favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
@@ -143,6 +143,30 @@
         }
         #navbar.scrolled { top: calc(12px + var(--safe-top)); width: 90%; padding: 10px 24px; background: rgba(5, 5, 5, 0.65); }
 
+        /* FAQ Section */
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .faq-item:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05); }
+        
+        .faq-trigger {
+            width: 100%; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between;
+            text-align: left; cursor: pointer;
+        }
+        .faq-title { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); }
+        .faq-plus { font-size: 1.5rem; transition: transform 0.4s ease; opacity: 0.5; }
+        
+        .faq-content { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); background: transparent; }
+        .faq-inner { padding: 0 32px 32px 32px; color: rgba(255, 255, 255, 0.5); line-height: 1.6; }
+
+        .faq-item.active .faq-plus { transform: rotate(45deg); opacity: 1; }
+        .faq-item.active .faq-content { max-height: 500px; }
+
         /* Текст */
         .blur-target { cursor: default; }
         .blur-word { 
@@ -204,6 +228,8 @@
                 <a href="#horizontal" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-horizontal">Horizontal</a>
                 <div class="w-[1px] h-3 bg-white/10"></div>
                 <a href="#vertical" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-vertical">Vertical</a>
+                <div class="w-[1px] h-3 bg-white/10"></div>
+                <a href="#faq" class="px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="nav-faq">FAQ</a>
             </div>
 
             <div class="flex items-center gap-4 md:gap-6">
@@ -265,6 +291,49 @@
                 </div>
             </div>
         </section>
+
+        <section id="faq" class="mb-20 max-w-4xl mx-auto px-4 md:px-0">
+            <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-8">
+                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-faq">Common Questions</h2>
+                <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">03</span>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-trigger" onclick="toggleFaq(this)">
+                        <span class="faq-title" data-i18n="faq-q1">How much does the service cost?</span>
+                        <span class="faq-plus">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-inner" data-i18n="faq-a1">The price depends on the complexity of the project, the length of the footage, and the density of motion graphics.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-trigger" onclick="toggleFaq(this)">
+                        <span class="faq-title" data-i18n="faq-q2">What do I need to get started?</span>
+                        <span class="faq-plus">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-inner" data-i18n="faq-a2">I will need your source footage, a brief description of the task, and any references or branding materials.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-trigger" onclick="toggleFaq(this)">
+                        <span class="faq-title" data-i18n="faq-q3">How long does it take?</span>
+                        <span class="faq-plus">+</span>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-inner" data-i18n="faq-a3">Usually, a vertical video takes 1-3 days, while complex motion design can take up to a week.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center" data-aos="fade-up">
+                <p class="text-gray-500 text-sm font-medium italic" data-i18n="faq-more">Still have questions? Let's talk directly.</p>
+            </div>
+        </section>
     </main>
 
     <footer id="contact" class="py-24 px-6 text-center border-t border-white/5">
@@ -285,6 +354,13 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1200, once: true });
+
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        }
 
         function openVideo(id, type) {
             const modal = document.getElementById('video-modal');
@@ -325,8 +401,24 @@
         }
 
         const translations = {
-            en: { "nav-vertical": "Vertical", "nav-horizontal": "Horizontal", "btn-contact-nav": "Contact", "hero-title-1": "Video editing", "hero-title-2": "For your brand", "hero-desc": "High-end vertical content and cinematic motion design.", "btn-work": "View Projects", "btn-contact-main": "Contact Me", "sec-vertical": "Vertical", "sec-horizontal": "Horizontal", "footer-title": "Let's work" },
-            ru: { "nav-vertical": "Вертикальные", "nav-horizontal": "Горизонтальные", "btn-contact-nav": "Контакты", "hero-title-1": "Монтаж видео", "hero-title-2": "Для бренда", "hero-desc": "Создаю виральный вертикальный контент и профессиональный моушн-дизайн.", "btn-work": "Смотреть работы", "btn-contact-main": "Связаться", "sec-vertical": "Вертикальные", "sec-horizontal": "Горизонтальные", "footer-title": "Поработаем?" }
+            en: { 
+                "nav-vertical": "Vertical", "nav-horizontal": "Horizontal", "nav-faq": "FAQ", "btn-contact-nav": "Contact", 
+                "hero-title-1": "Video editing", "hero-title-2": "For your brand", "hero-desc": "High-end vertical content and cinematic motion design.", 
+                "btn-work": "View Projects", "btn-contact-main": "Contact Me", "sec-vertical": "Vertical", "sec-horizontal": "Horizontal", 
+                "sec-faq": "Common Questions", "faq-q1": "How much does the service cost?", "faq-a1": "The price depends on the complexity of the project and motion graphics density.",
+                "faq-q2": "What do I need to get started?", "faq-a2": "I'll need your source footage, a brief description, and any branding materials.",
+                "faq-q3": "How long does it take?", "faq-a3": "Usually 1-3 days for vertical videos and up to a week for complex projects.",
+                "faq-more": "Still have questions? Let's talk directly.", "footer-title": "Let's work" 
+            },
+            ru: { 
+                "nav-vertical": "Вертикальные", "nav-horizontal": "Горизонтальные", "nav-faq": "FAQ", "btn-contact-nav": "Контакты", 
+                "hero-title-1": "Монтаж видео", "hero-title-2": "Для бренда", "hero-desc": "Создаю популярный вертикальный контент и профессиональный моушн-дизайн.", 
+                "btn-work": "Смотреть работы", "btn-contact-main": "Связаться", "sec-vertical": "Вертикальные", "sec-horizontal": "Горизонтальные", 
+                "sec-faq": "Частые вопросы", "faq-q1": "Сколько стоят услуги?", "faq-a1": "Цена зависит от сложности проекта и количества графики.",
+                "faq-q2": "Что нужно для начала?", "faq-a2": "Мне понадобятся ваши исходные материалы, краткое ТЗ и референсы.",
+                "faq-q3": "Сколько времени это займет?", "faq-a3": "Обычно 1-3 дня на вертикальные видео и до недели на сложные проекты.",
+                "faq-more": "Остались вопросы? Напишите мне лично.", "footer-title": "Поработаем?" 
+            }
         };
 
         let currentLang = localStorage.getItem('prefLang') || 'en';
