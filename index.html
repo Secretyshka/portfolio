@@ -27,22 +27,22 @@
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        @media (min-width: 1024px) {
-            html { font-size: 18px; } 
+        /* Жесткий запрет на горизонтальную прокрутку */
+        html, body { 
+            max-width: 100%; 
+            overflow-x: hidden; 
+            background-color: #050505; 
+            height: 100%; 
         }
-
-        html { background-color: #050505; height: 100%; }
 
         body { 
             margin: 0; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; 
-            overflow-x: hidden; min-height: 100vh;
+            min-height: 100vh;
             padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
             background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505);
             background-size: 400% 400%;
             animation: gradientMove 15s ease infinite;
         }
-
-        section { scroll-margin-top: 110px; }
 
         @keyframes gradientMove { 
             0% { background-position: 0% 50%; } 
@@ -92,10 +92,10 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px);
         }
-        .modal-content-wrapper { position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; width: 90%; max-width: 1100px; }
+        .modal-content-wrapper { position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; width: 90%; max-width: 1000px; }
         .modal-content { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); transform: scale(0.9); transition: 0.4s; }
         #video-modal.active .modal-content { transform: scale(1); }
-        .modal-content-wrapper.vertical { max-width: 420px; }
+        .modal-content-wrapper.vertical { max-width: 400px; }
         .modal-content-wrapper.vertical .modal-content { aspect-ratio: 9/16; }
         .close-modal { position: absolute; top: -50px; right: 0; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; font-size: 24px; }
 
@@ -110,7 +110,6 @@
 
         .faq-item { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1.5rem; margin-bottom: 1rem; overflow: hidden; }
         .faq-trigger { width: 100%; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .faq-title { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); }
         .faq-plus { font-size: 1.5rem; transition: 0.4s; opacity: 0.5; }
         .faq-content { max-height: 0; overflow: hidden; transition: all 0.4s ease; }
         .faq-inner { padding: 0 32px 32px 32px; color: rgba(255, 255, 255, 0.5); line-height: 1.6; }
@@ -121,39 +120,35 @@
         .blur-word.visible { filter: blur(0px); opacity: 1; transform: translateY(0); }
         .text-outline .blur-word { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; }
 
-        .email-pill { 
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); 
-            padding: 14px 28px; border-radius: 100px; display: inline-flex; align-items: center; 
-            gap: 12px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            margin-bottom: 0.5rem; position: relative;
+        .btn-leifu { 
+            background: #fff; color: #000; transition: 0.4s; font-weight: 800; 
+            display: inline-flex; align-items: center; justify-content: center; 
+            gap: 10px; white-space: nowrap; /* Кнопка не разваливается */
         }
-        .email-pill:hover { background: rgba(255, 255, 255, 0.07); transform: scale(1.05); border-color: rgba(255,255,255,0.3); }
-        .copy-hint { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 2rem; font-weight: 700; }
+        .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); }
 
+        .email-pill { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 28px; border-radius: 100px; display: inline-flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.4s; margin-bottom: 2rem; }
         .social-link { transition: 0.4s; color: rgba(255,255,255,0.4); }
-        .social-link:hover { color: #ffffff; transform: scale(1.1); }
         #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; z-index: 99; opacity: 0; visibility: hidden; transition: 0.4s; }
         #backToTop.show { opacity: 1; visibility: visible; }
         #lang-slider { transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .lang-active-text { color: #000 !important; }
 
-        /* ИСПРАВЛЕНИЯ МОБИЛЬНОЙ ВЕРСИИ */
-        .btn-leifu { 
-            background: #fff; color: #000; transition: 0.4s; font-weight: 800; 
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
-            white-space: nowrap;
-        }
-        .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); }
-
+        /* ПРАВКИ ДЛЯ МОБИЛЬНЫХ */
         @media (max-width: 640px) {
             .section-header { flex-direction: column; align-items: flex-start !important; gap: 8px; }
             .section-number { font-size: 12px !important; color: rgba(255,255,255,0.2) !important; margin-bottom: 4px; }
             
-            /* Слово поработаем не выходит за экран */
-            .footer-title-responsive { font-size: 14vw !important; word-wrap: break-word; padding: 0 5px; line-height: 1.1; }
+            /* Исправление "ПОРАБОТАЕМ" */
+            .footer-title-responsive { 
+                font-size: clamp(2.5rem, 14vw, 10rem) !important; 
+                word-wrap: break-word; 
+                padding: 0 10px; 
+                max-width: 100%;
+                line-height: 1.1 !important;
+            }
             
-            /* Кнопки в герое более компактные для мобилок */
-            header .flex-col { width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; }
+            #contact { overflow: hidden; } /* Дополнительная защита */
         }
     </style>
 </head>
@@ -165,7 +160,7 @@
         <div class="modal-content-wrapper" id="modal-wrapper">
             <div class="close-modal" onclick="closeVideo()"><i class="fa-solid fa-xmark"></i></div>
             <div class="modal-content">
-                <iframe id="video-player" width="100%" height="100%" src="" frameborder="0" allow="autoplay; fullscreen"></iframe>
+                <iframe id="video-player" width="100%" height="100%" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -207,7 +202,7 @@
             <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up">
                 <a href="#horizontal" class="btn-leifu px-10 py-5 rounded-full uppercase tracking-widest text-[10px]">
                     <span data-i18n="btn-work">View Projects</span>
-                    <i class="fa-solid fa-arrow-right text-[12px]"></i>
+                    <i class="fa-solid fa-arrow-right"></i>
                 </a>
                 <a href="#contact" class="px-10 py-5 rounded-full font-black uppercase tracking-widest text-[10px] border border-white/20 hover:border-white transition-all" data-i18n="btn-contact-main">Contact Me</a>
             </div>
@@ -222,11 +217,11 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div data-aos="fade-up" class="video-card aspect-video" onclick="openVideo('Ed0TduU1-Wo', 'horizontal')">
-                    <img src="./hor1.png">
+                    <img src="./hor1.png" alt="Horizontal Project">
                     <div class="play-icon"><i class="fa-solid fa-play"></i></div>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="200" class="video-card aspect-video" onclick="openVideo('NzOogImF21c', 'horizontal')">
-                    <img src="./hor2.png">
+                    <img src="./hor2.png" alt="Horizontal Project">
                     <div class="play-icon"><i class="fa-solid fa-play"></i></div>
                 </div>
             </div>
@@ -239,11 +234,11 @@
             </div>
             <div class="grid grid-cols-2 gap-6 md:gap-10 max-w-[700px] w-full">
                 <div data-aos="fade-up" class="video-card aspect-[9/16]" onclick="openVideo('20QAmZEfLzw', 'vertical')">
-                    <img src="./vert1.png">
+                    <img src="./vert1.png" alt="Vertical Project">
                     <div class="play-icon"><i class="fa-solid fa-play"></i></div>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="200" class="video-card aspect-[9/16]" onclick="openVideo('ig3abtKCv9g', 'vertical')">
-                    <img src="./vert2.png">
+                    <img src="./vert2.png" alt="Vertical Project">
                     <div class="play-icon"><i class="fa-solid fa-play"></i></div>
                 </div>
             </div>
@@ -261,7 +256,7 @@
                         <span class="faq-plus">+</span>
                     </div>
                     <div class="faq-content">
-                        <div class="faq-inner" data-i18n="faq-a1">The price depends on the complexity of the project, the length of the footage, and the density of motion graphics. Contact me for a personal quote.</div>
+                        <div class="faq-inner" data-i18n="faq-a1">The price depends on the complexity of the project and motion graphics density.</div>
                     </div>
                 </div>
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
@@ -270,16 +265,7 @@
                         <span class="faq-plus">+</span>
                     </div>
                     <div class="faq-content">
-                        <div class="faq-inner" data-i18n="faq-a2">I will need your source footage, a brief description of the task, and any references or branding materials you have.</div>
-                    </div>
-                </div>
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="faq-trigger" onclick="toggleFaq(this)">
-                        <span class="faq-title" data-i18n="faq-q3">How long does it take?</span>
-                        <span class="faq-plus">+</span>
-                    </div>
-                    <div class="faq-content">
-                        <div class="faq-inner" data-i18n="faq-a3">Usually, a vertical video takes 1-3 days, while a complex horizontal project or motion design can take up to a week.</div>
+                        <div class="faq-inner" data-i18n="faq-a2">I will need your source footage, a brief description of the task, and any references.</div>
                     </div>
                 </div>
             </div>
@@ -287,20 +273,18 @@
     </main>
 
     <footer id="contact" class="py-24 px-6 text-center border-t border-white/5">
-        <h2 class="text-[12vw] md:text-[120px] font-black uppercase mb-12 italic text-outline blur-target footer-title-responsive" data-i18n="footer-title">Let's work</h2>
+        <h2 class="text-[12vw] md:text-[120px] font-black uppercase mb-12 tracking-tighter italic text-outline leading-none blur-target footer-title-responsive" data-i18n="footer-title">Let's work</h2>
         <div class="flex flex-col items-center">
             <div class="email-pill" id="copy-email" onclick="copyEmail()">
                 <i class="fa-solid fa-envelope" id="mail-icon"></i>
                 <span id="email-text">secretg836@gmail.com</span>
             </div>
-            <p class="copy-hint" data-i18n="copy-hint">Click to copy email</p>
-            
             <div class="flex gap-8 md:gap-12" data-aos="zoom-in">
                 <a href="https://t.me/secretyshka" target="_blank" class="social-link text-4xl md:text-5xl"><i class="fa-brands fa-telegram"></i></a>
                 <a href="https://x.com/secretyshka" target="_blank" class="social-link text-4xl md:text-5xl"><i class="fa-brands fa-square-x-twitter"></i></a>
             </div>
         </div>
-        <p class="mt-20 text-[10px] text-gray-700 uppercase tracking-widest font-black italic">© 2026 Secretyshka Prod.</p>
+        <p class="mt-20 text-[10px] text-gray-700 uppercase tracking-widest font-black italic">© 2026 Secretyshka Edits.</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -340,11 +324,8 @@
             const text = document.getElementById('email-text');
             const pill = document.getElementById('copy-email');
             text.innerText = (currentLang === 'ru') ? "Скопировано!" : "Copied!";
-            pill.style.background = "rgba(59, 130, 246, 0.2)";
-            setTimeout(() => { 
-                text.innerText = email; 
-                pill.style.background = "rgba(255, 255, 255, 0.03)"; 
-            }, 2000);
+            pill.style.background = "rgba(59, 130, 246, 0.4)";
+            setTimeout(() => { text.innerText = email; pill.style.background = "rgba(255, 255, 255, 0.03)"; }, 2000);
         }
 
         const translations = {
@@ -353,18 +334,16 @@
                 "hero-title-1": "Video editing", "hero-title-2": "For your brand", "hero-desc": "High-end vertical content and cinematic motion design.", 
                 "btn-work": "View Projects", "btn-contact-main": "Contact Me", "sec-vertical": "Vertical", "sec-horizontal": "Horizontal", 
                 "sec-faq": "Common Questions", "faq-q1": "How much does the service cost?", "faq-a1": "The price depends on the complexity of the project and motion graphics density.",
-                "faq-q2": "What do I need to get started?", "faq-a2": "I'll need your source footage, a brief description, and any branding materials.",
-                "faq-q3": "How long does it take?", "faq-a3": "Usually 1-3 days for vertical videos and up to a week for complex projects.",
-                "copy-hint": "Click to copy email", "footer-title": "Let's work" 
+                "faq-q2": "What do I need to get started?", "faq-a2": "I'll need your source footage, a brief description, and any references.",
+                "footer-title": "Let's work" 
             },
             ru: { 
                 "nav-vertical": "Вертикальные", "nav-horizontal": "Горизонтальные", "nav-faq": "FAQ", "btn-contact-nav": "Контакты", 
                 "hero-title-1": "Монтаж видео", "hero-title-2": "Для бренда", "hero-desc": "Создаю популярный вертикальный контент и профессиональный моушн-дизайн.", 
                 "btn-work": "Смотреть работы", "btn-contact-main": "Связаться", "sec-vertical": "Вертикальные", "sec-horizontal": "Горизонтальные", 
-                "sec-faq": "Частые вопросы", "faq-q1": "Сколько стоит?", "faq-a1": "Зависит от сложности проекта, длины исходников и количества графики.",
+                "sec-faq": "Частые вопросы", "faq-q1": "Сколько стоят услуги?", "faq-a1": "Цена зависит от сложности проекта и количества графики.",
                 "faq-q2": "Что нужно для начала?", "faq-a2": "Мне понадобятся ваши исходные материалы, краткое ТЗ и референсы.",
-                "faq-q3": "Как долго?", "faq-a3": "Обычно 1-3 дня на вертикалки и до недели на сложные проекты.",
-                "copy-hint": "Нажмите, чтобы скопировать", "footer-title": "Поработаем?" 
+                "footer-title": "Поработаем?" 
             }
         };
 
@@ -396,8 +375,6 @@
             else { btnRu.classList.add('lang-active-text'); btnEn.classList.remove('lang-active-text'); }
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const text = translations[lang][el.getAttribute('data-i18n')];
-                // Сохраняем иконку, если она была в кнопке
-                const icon = el.parentElement.querySelector('i');
                 if (el.classList.contains('blur-target')) applyBlurEffect(el, text);
                 else el.textContent = text;
             });
