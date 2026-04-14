@@ -43,7 +43,6 @@
             animation: gradientMove 15s ease infinite;
         }
 
-        /* Отступ для скролла */
         section { scroll-margin-top: 110px; }
 
         @keyframes gradientMove { 
@@ -126,7 +125,7 @@
         .blur-word.visible { filter: blur(0px); opacity: 1; transform: translateY(0); }
         .text-outline .blur-word { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; }
 
-        /* Анимация почты */
+        /* Почта */
         .email-pill { 
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); 
             padding: 14px 28px; border-radius: 100px; display: inline-flex; align-items: center; 
@@ -143,6 +142,9 @@
         #backToTop.show { opacity: 1; visibility: visible; }
         #lang-slider { transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .lang-active-text { color: #000 !important; }
+
+        .btn-leifu { background: #fff; color: #000; transition: 0.4s; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); }
 
         @media (max-width: 640px) {
             .footer-title-responsive { font-size: 14vw !important; }
@@ -197,7 +199,10 @@
             </h1>
             <p class="text-gray-400 text-base md:text-xl max-w-xl mx-auto mb-10 font-medium blur-target" data-i18n="hero-desc">High-end vertical content and cinematic motion design.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up">
-                <a href="#horizontal" class="btn-leifu px-10 py-5 rounded-full uppercase tracking-widest text-[10px]" data-i18n="btn-work">View Projects</a>
+                <a href="#horizontal" class="btn-leifu px-10 py-5 rounded-full uppercase tracking-widest text-[10px]">
+                    <span data-i18n="btn-work">View Projects</span>
+                    <i class="fa-solid fa-arrow-right text-[12px]"></i>
+                </a>
                 <a href="#contact" class="px-10 py-5 rounded-full font-black uppercase tracking-widest text-[10px] border border-white/20 hover:border-white transition-all" data-i18n="btn-contact-main">Contact Me</a>
             </div>
         </div>
@@ -328,7 +333,6 @@
             navigator.clipboard.writeText(email);
             const text = document.getElementById('email-text');
             const pill = document.getElementById('copy-email');
-            const oldText = text.innerText;
             text.innerText = (currentLang === 'ru') ? "Скопировано!" : "Copied!";
             pill.style.background = "rgba(59, 130, 246, 0.2)";
             setTimeout(() => { 
@@ -386,6 +390,8 @@
             else { btnRu.classList.add('lang-active-text'); btnEn.classList.remove('lang-active-text'); }
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const text = translations[lang][el.getAttribute('data-i18n')];
+                // Если внутри есть иконка, сохраняем её
+                const icon = el.parentElement.querySelector('i');
                 if (el.classList.contains('blur-target')) applyBlurEffect(el, text);
                 else el.textContent = text;
             });
