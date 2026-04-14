@@ -27,7 +27,6 @@
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Умеренное увеличение масштаба для ПК (~15%) */
         @media (min-width: 1024px) {
             html { font-size: 18px; } 
         }
@@ -83,7 +82,6 @@
         }
         .video-card:hover .play-icon { opacity: 1; }
 
-        /* Модальное окно */
         #video-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 2000; display: none; align-items: center; justify-content: center;
@@ -110,7 +108,6 @@
         }
         #navbar.scrolled { top: calc(12px + var(--safe-top)); width: 90%; padding: 10px 24px; background: rgba(5, 5, 5, 0.65); }
 
-        /* FAQ */
         .faq-item { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1.5rem; margin-bottom: 1rem; overflow: hidden; }
         .faq-trigger { width: 100%; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .faq-title { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); }
@@ -120,12 +117,10 @@
         .faq-item.active .faq-plus { transform: rotate(45deg); opacity: 1; }
         .faq-item.active .faq-content { max-height: 500px; }
 
-        /* Текст */
         .blur-word { display: inline-block; white-space: pre; filter: blur(12px); opacity: 0; transform: translateY(15px); transition: 0.8s ease-out; }
         .blur-word.visible { filter: blur(0px); opacity: 1; transform: translateY(0); }
         .text-outline .blur-word { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; }
 
-        /* Почта */
         .email-pill { 
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); 
             padding: 14px 28px; border-radius: 100px; display: inline-flex; align-items: center; 
@@ -133,7 +128,6 @@
             margin-bottom: 0.5rem; position: relative;
         }
         .email-pill:hover { background: rgba(255, 255, 255, 0.07); transform: scale(1.05); border-color: rgba(255,255,255,0.3); }
-        .email-pill:active { transform: scale(0.95); }
         .copy-hint { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 2rem; font-weight: 700; }
 
         .social-link { transition: 0.4s; color: rgba(255,255,255,0.4); }
@@ -143,11 +137,23 @@
         #lang-slider { transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .lang-active-text { color: #000 !important; }
 
-        .btn-leifu { background: #fff; color: #000; transition: 0.4s; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; }
+        /* ИСПРАВЛЕНИЯ МОБИЛЬНОЙ ВЕРСИИ */
+        .btn-leifu { 
+            background: #fff; color: #000; transition: 0.4s; font-weight: 800; 
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
+            white-space: nowrap;
+        }
         .btn-leifu:hover { background: #3b82f6; color: #fff; transform: translateY(-3px); }
 
         @media (max-width: 640px) {
-            .footer-title-responsive { font-size: 14vw !important; }
+            .section-header { flex-direction: column; align-items: flex-start !important; gap: 8px; }
+            .section-number { font-size: 12px !important; color: rgba(255,255,255,0.2) !important; margin-bottom: 4px; }
+            
+            /* Слово поработаем не выходит за экран */
+            .footer-title-responsive { font-size: 14vw !important; word-wrap: break-word; padding: 0 5px; line-height: 1.1; }
+            
+            /* Кнопки в герое более компактные для мобилок */
+            header .flex-col { width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; }
         }
     </style>
 </head>
@@ -210,9 +216,9 @@
 
     <main class="max-w-[1400px] mx-auto px-6 py-20">
         <section id="horizontal" class="mb-32">
-            <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-8">
+            <div class="section-header flex justify-between items-end mb-12 border-b border-white/10 pb-8">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-horizontal">Horizontal</h2>
-                <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">01</span>
+                <span class="section-number text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">01</span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div data-aos="fade-up" class="video-card aspect-video" onclick="openVideo('Ed0TduU1-Wo', 'horizontal')">
@@ -227,9 +233,9 @@
         </section>
 
         <section id="vertical" class="mb-32 flex flex-col items-center">
-            <div class="w-full flex justify-between items-end mb-12 border-b border-white/10 pb-8">
+            <div class="section-header w-full flex justify-between items-end mb-12 border-b border-white/10 pb-8">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-vertical">Vertical</h2>
-                <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">02</span>
+                <span class="section-number text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">02</span>
             </div>
             <div class="grid grid-cols-2 gap-6 md:gap-10 max-w-[700px] w-full">
                 <div data-aos="fade-up" class="video-card aspect-[9/16]" onclick="openVideo('20QAmZEfLzw', 'vertical')">
@@ -244,9 +250,9 @@
         </section>
 
         <section id="faq" class="mb-32 max-w-4xl mx-auto">
-            <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-8">
+            <div class="section-header flex justify-between items-end mb-12 border-b border-white/10 pb-8">
                 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-faq">Common Questions</h2>
-                <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">03</span>
+                <span class="section-number text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">03</span>
             </div>
             <div class="space-y-4">
                 <div class="faq-item" data-aos="fade-up">
@@ -390,7 +396,7 @@
             else { btnRu.classList.add('lang-active-text'); btnEn.classList.remove('lang-active-text'); }
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const text = translations[lang][el.getAttribute('data-i18n')];
-                // Если внутри есть иконка, сохраняем её
+                // Сохраняем иконку, если она была в кнопке
                 const icon = el.parentElement.querySelector('i');
                 if (el.classList.contains('blur-target')) applyBlurEffect(el, text);
                 else el.textContent = text;
