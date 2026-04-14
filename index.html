@@ -27,6 +27,11 @@
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
+        /* [1] Увеличение масштаба для ПК на ~33% */
+        @media (min-width: 1024px) {
+            html { font-size: 21px; } /* Базовый размер увеличен */
+        }
+
         html { background-color: #050505; height: 100%; }
 
         body { 
@@ -37,6 +42,9 @@
             background-size: 400% 400%;
             animation: gradientMove 15s ease infinite;
         }
+
+        /* [2] Отступ для скролла, чтобы заголовок не прятался под меню */
+        section { scroll-margin-top: 100px; }
 
         @keyframes gradientMove { 
             0% { background-position: 0% 50%; } 
@@ -107,7 +115,7 @@
         }
 
         .modal-content-wrapper {
-            position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; width: 90%; max-width: 1000px;
+            position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; width: 90%; max-width: 1200px;
         }
 
         .modal-glow {
@@ -124,7 +132,7 @@
         }
 
         #video-modal.active .modal-content { transform: scale(1); }
-        .modal-content-wrapper.vertical { max-width: 400px; }
+        .modal-content-wrapper.vertical { max-width: 450px; }
         .modal-content-wrapper.vertical .modal-content { aspect-ratio: 9/16; }
 
         .close-modal {
@@ -135,7 +143,7 @@
         /* Навигация */
         #navbar {
             position: fixed; top: calc(24px + var(--safe-top)); left: 50%; transform: translateX(-50%);
-            width: 95%; max-width: 1400px; z-index: 100; background: rgba(255, 255, 255, 0.03);
+            width: 95%; max-width: 1600px; z-index: 100; background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px;
             padding: 16px 28px; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -200,6 +208,11 @@
         
         #lang-slider { will-change: transform; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .lang-active-text { color: #000 !important; }
+
+        /* [3] Исправление обрезки заголовка футера на мобилках */
+        @media (max-width: 640px) {
+            .footer-title-responsive { font-size: 15vw !important; }
+        }
     </style>
 </head>
 <body>
@@ -220,7 +233,7 @@
 
     <nav id="navbar">
         <div class="flex justify-between items-center w-full">
-            <a href="#" class="block h-8 transition-opacity hover:opacity-70">
+            <a href="#" class="block h-10 md:h-12 transition-opacity hover:opacity-70">
                 <img src="./logo small.png" alt="Logo" class="h-full w-auto block">
             </a>
             
@@ -234,33 +247,33 @@
 
             <div class="flex items-center gap-4 md:gap-6">
                 <a href="#contact" class="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-400 transition-colors" data-i18n="btn-contact-nav">Contact</a>
-                <div class="relative flex bg-white/5 p-1 rounded-xl border border-white/10 w-[80px] md:w-[90px] h-[32px] md:h-[36px] overflow-hidden">
-                    <div id="lang-slider" class="absolute top-1 left-1 bottom-1 w-[36px] md:w-[42px] bg-white rounded-lg z-0"></div>
-                    <button onclick="changeLang('en')" class="relative z-10 w-1/2 text-[9px] md:text-[10px] font-black transition-colors duration-300" id="txt-en">EN</button>
-                    <button onclick="changeLang('ru')" class="relative z-10 w-1/2 text-[9px] md:text-[10px] font-black transition-colors duration-300" id="txt-ru">RU</button>
+                <div class="relative flex bg-white/5 p-1 rounded-xl border border-white/10 w-[80px] md:w-[100px] h-[32px] md:h-[40px] overflow-hidden">
+                    <div id="lang-slider" class="absolute top-1 left-1 bottom-1 w-[36px] md:w-[46px] bg-white rounded-lg z-0"></div>
+                    <button onclick="changeLang('en')" class="relative z-10 w-1/2 text-[9px] md:text-[11px] font-black transition-colors duration-300" id="txt-en">EN</button>
+                    <button onclick="changeLang('ru')" class="relative z-10 w-1/2 text-[9px] md:text-[11px] font-black transition-colors duration-300" id="txt-ru">RU</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <header class="min-h-screen flex flex-col items-center justify-center relative px-6 text-center pt-20">
-        <div class="z-10 w-full max-w-5xl">
-            <h1 class="text-[12vw] md:text-[110px] font-black mb-6 md:mb-8 tracking-tighter uppercase leading-[0.9] italic">
+        <div class="z-10 w-full max-w-6xl">
+            <h1 class="text-[12vw] md:text-[130px] font-black mb-6 md:mb-8 tracking-tighter uppercase leading-[0.9] italic">
                 <span class="block blur-target" data-i18n="hero-title-1">Video editing</span>
                 <span class="text-outline block blur-target" data-i18n="hero-title-2">For your brand</span>
             </h1>
-            <p class="text-gray-400 text-base md:text-xl max-w-xl mx-auto mb-10 md:mb-12 font-medium px-4 blur-target" data-i18n="hero-desc">High-end vertical content and cinematic motion design.</p>
+            <p class="text-gray-400 text-base md:text-2xl max-w-2xl mx-auto mb-10 md:mb-12 font-medium px-4 blur-target" data-i18n="hero-desc">High-end vertical content and cinematic motion design.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up">
-                <a href="#horizontal" class="btn-leifu px-10 py-5 rounded-full uppercase tracking-widest text-[10px] md:text-xs" data-i18n="btn-work">View Projects</a>
-                <a href="#contact" class="px-10 py-5 rounded-full font-black uppercase tracking-widest text-[10px] md:text-xs border border-white/20 hover:border-white hover:bg-white/5 transition-all" data-i18n="btn-contact-main">Contact Me</a>
+                <a href="#horizontal" class="btn-leifu px-12 py-6 rounded-full uppercase tracking-widest text-[10px] md:text-sm" data-i18n="btn-work">View Projects</a>
+                <a href="#contact" class="px-12 py-6 rounded-full font-black uppercase tracking-widest text-[10px] md:text-sm border border-white/20 hover:border-white hover:bg-white/5 transition-all" data-i18n="btn-contact-main">Contact Me</a>
             </div>
         </div>
     </header>
 
-    <main class="max-w-[1400px] mx-auto px-6 py-20 md:py-32">
+    <main class="max-w-[1600px] mx-auto px-6 py-20 md:py-32">
         <section id="horizontal" class="mb-32">
             <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-8">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-horizontal">Horizontal</h2>
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-horizontal">Horizontal</h2>
                 <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">01</span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -277,10 +290,10 @@
 
         <section id="vertical" class="mb-32 flex flex-col items-center">
             <div class="w-full flex justify-between items-end mb-12 border-b border-white/10 pb-8">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-vertical">Vertical</h2>
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-vertical">Vertical</h2>
                 <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">02</span>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-3xl w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-5xl w-full">
                 <div data-aos="fade-up" class="video-card aspect-[9/16]" onclick="openVideo('20QAmZEfLzw', 'vertical')">
                     <img src="./vert1.png" alt="Project 3">
                     <div class="play-icon"><i class="fa-solid fa-play text-white text-2xl"></i></div>
@@ -292,9 +305,9 @@
             </div>
         </section>
 
-        <section id="faq" class="mb-20 max-w-4xl mx-auto px-4 md:px-0">
+        <section id="faq" class="mb-20 max-w-5xl mx-auto px-4 md:px-0">
             <div class="flex justify-between items-end mb-12 border-b border-white/10 pb-8">
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-faq">Common Questions</h2>
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter blur-target" data-i18n="sec-faq">Common Questions</h2>
                 <span class="text-gray-600 font-bold uppercase tracking-widest text-[10px] italic">03</span>
             </div>
             
@@ -305,7 +318,7 @@
                         <span class="faq-plus">+</span>
                     </div>
                     <div class="faq-content">
-                        <div class="faq-inner" data-i18n="faq-a1">The price depends on the complexity of the project, the length of the footage, and the density of motion graphics.</div>
+                        <div class="faq-inner" data-i18n="faq-a1">The price depends on the complexity of the project and motion graphics density.</div>
                     </div>
                 </div>
 
@@ -315,7 +328,7 @@
                         <span class="faq-plus">+</span>
                     </div>
                     <div class="faq-content">
-                        <div class="faq-inner" data-i18n="faq-a2">I will need your source footage, a brief description of the task, and any references or branding materials.</div>
+                        <div class="faq-inner" data-i18n="faq-a2">I'll need your source footage, a brief description, and any references or branding materials.</div>
                     </div>
                 </div>
 
@@ -325,27 +338,27 @@
                         <span class="faq-plus">+</span>
                     </div>
                     <div class="faq-content">
-                        <div class="faq-inner" data-i18n="faq-a3">Usually, a vertical video takes 1-3 days, while complex motion design can take up to a week.</div>
+                        <div class="faq-inner" data-i18n="faq-a3">Usually 1-3 days for vertical videos and up to a week for complex projects.</div>
                     </div>
                 </div>
             </div>
 
             <div class="mt-12 text-center" data-aos="fade-up">
-                <p class="text-gray-500 text-sm font-medium italic" data-i18n="faq-more">Still have questions? Let's talk directly.</p>
+                <p class="text-gray-500 text-sm md:text-lg font-medium italic" data-i18n="faq-more">Still have questions? Let's talk directly.</p>
             </div>
         </section>
     </main>
 
     <footer id="contact" class="py-24 px-6 text-center border-t border-white/5">
-        <h2 class="text-[12vw] md:text-[120px] font-black uppercase mb-12 tracking-tighter italic text-outline leading-none blur-target" data-i18n="footer-title">Let's work</h2>
+        <h2 class="text-[12vw] md:text-[140px] font-black uppercase mb-12 tracking-tighter italic text-outline leading-none blur-target footer-title-responsive" data-i18n="footer-title">Let's work</h2>
         <div class="flex flex-col items-center">
             <div class="email-pill" id="copy-email" onclick="copyEmail()">
                 <i class="fa-solid fa-envelope" id="mail-icon"></i>
                 <span id="email-text">secretg836@gmail.com</span>
             </div>
             <div class="flex justify-center items-center gap-8 md:gap-12" data-aos="zoom-in">
-                <a href="https://t.me/secretyshka" target="_blank" class="social-link text-4xl md:text-5xl"><i class="fa-brands fa-telegram"></i></a>
-                <a href="https://x.com/secretyshka" target="_blank" class="social-link text-4xl md:text-5xl"><i class="fa-brands fa-square-x-twitter"></i></a>
+                <a href="https://t.me/secretyshka" target="_blank" class="social-link text-4xl md:text-6xl"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://x.com/secretyshka" target="_blank" class="social-link text-4xl md:text-6xl"><i class="fa-brands fa-square-x-twitter"></i></a>
             </div>
         </div>
         <p class="mt-20 text-[10px] text-gray-700 uppercase tracking-[0.5em] font-black italic">© 2026 Secretyshka Edits.</p>
@@ -445,7 +458,7 @@
             if (lang === currentLang && !force) return;
             currentLang = lang;
             localStorage.setItem('prefLang', lang);
-            const moveDist = isMobile ? 36 : 42;
+            const moveDist = isMobile ? 36 : 46;
             slider.style.transform = (lang === 'en') ? 'translateX(0)' : `translateX(${moveDist}px)`;
             if (lang === 'en') { btnEn.classList.add('lang-active-text'); btnRu.classList.remove('lang-active-text'); }
             else { btnRu.classList.add('lang-active-text'); btnEn.classList.remove('lang-active-text'); }
