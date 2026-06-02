@@ -137,7 +137,6 @@
         #lang-slider { transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .lang-active-text { color: #000 !important; }
 
-        /* ИСПРАВЛЕНИЯ МОБИЛЬНОЙ ВЕРСИИ */
         .btn-leifu { 
             background: #fff; color: #000; transition: 0.4s; font-weight: 800; 
             display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
@@ -148,11 +147,7 @@
         @media (max-width: 640px) {
             .section-header { flex-direction: column; align-items: flex-start !important; gap: 8px; }
             .section-number { font-size: 12px !important; color: rgba(255,255,255,0.2) !important; margin-bottom: 4px; }
-            
-            /* Слово поработаем не выходит за экран */
             .footer-title-responsive { font-size: 14vw !important; word-wrap: break-word; padding: 0 5px; line-height: 1.1; }
-            
-            /* Кнопки в герое более компактные для мобилок */
             header .flex-col { width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; }
         }
     </style>
@@ -160,13 +155,13 @@
 <body>
     <div class="noise"></div>
 
+    <!-- Модальное окно с чистым HTML5 видеоплеером -->
     <div id="video-modal">
         <div class="modal-overlay" onclick="closeVideo()"></div>
         <div class="modal-content-wrapper" id="modal-wrapper">
             <div class="close-modal" onclick="closeVideo()"><i class="fa-solid fa-xmark"></i></div>
             <div class="modal-content flex items-center justify-center bg-black">
-                <iframe id="video-player" class="w-full h-full hidden" src="" frameborder="0" allow="autoplay; fullscreen"></iframe>
-                <video id="native-player" class="w-full h-full hidden" controls playsinline></video>
+                <video id="native-player" class="w-full h-full" controls playsinline></video>
             </div>
         </div>
     </div>
@@ -315,40 +310,22 @@
             if (!isActive) item.classList.add('active');
         }
 
-        // База данных ссылок: EN использует YouTube iframe, RU использует прямые стриминговые ссылки Google Drive
-        const videoSources = {
-            en: [
-                "https://www.youtube.com/embed/Ed0TduU1-Wo?autoplay=1&mute=1",
-                "https://www.youtube.com/embed/NzOogImF21c?autoplay=1&mute=1",
-                "https://www.youtube.com/embed/20QAmZEfLzw?autoplay=1&mute=1",
-                "https://www.youtube.com/embed/ig3abtKCv9g?autoplay=1&mute=1"
-            ],
-            ru: [
-                "https://drive.google.com/uc?export=download&id=1hnkHezeaBysHx4lC0UQJEMsSD3DUzgNj",
-                "https://drive.google.com/uc?export=download&id=1dzwEvq1kZj9m2epil7Myr8t4h1NTaY0s",
-                "https://drive.google.com/uc?export=download&id=1fqdggj3_9nDR6OvbW3WOHchJJEqOZ1Gm",
-                "https://drive.google.com/uc?export=download&id=1xxbg6fzfuDvfvBqkIMyrIpWSmHKsF4hA"
-            ]
-        };
+        // Локальная база ссылок: стримим пережатые ролики напрямую из твоего репозитория GitHub
+        const videoSources = [
+            "./videos/hor1.mp4",
+            "./videos/hor2.mp4",
+            "./videos/vert1.mp4",
+            "./videos/vert2.mp4"
+        ];
 
         function openVideo(index, type) {
             const modal = document.getElementById('video-modal');
-            const iframePlayer = document.getElementById('video-player');
             const nativePlayer = document.getElementById('native-player');
             const wrapper = document.getElementById('modal-wrapper');
             
-            if (currentLang === 'en') {
-                // Включаем iframe плеер для YouTube
-                nativePlayer.classList.add('hidden');
-                iframePlayer.classList.remove('hidden');
-                iframePlayer.src = videoSources.en[index];
-            } else {
-                // Включаем чистый тег видео для Гугл Диска
-                iframePlayer.classList.add('hidden');
-                nativePlayer.classList.remove('hidden');
-                nativePlayer.src = videoSources.ru[index];
-                nativePlayer.play().catch(err => console.log("Автоплей заблокирован, пользователь запустит сам"));
-            }
+            // Задаем источник и запускаем воспроизведение
+            nativePlayer.src = videoSources[index];
+            nativePlayer.play().catch(err => console.log("Автоплей остановлен браузером, юзер запустит сам"));
             
             if (type === 'vertical') wrapper.classList.add('vertical');
             else wrapper.classList.remove('vertical');
@@ -360,15 +337,13 @@
 
         function closeVideo() {
             const modal = document.getElementById('video-modal');
-            const iframePlayer = document.getElementById('video-player');
             const nativePlayer = document.getElementById('native-player');
             
             modal.classList.remove('active');
             setTimeout(() => { 
                 modal.style.display = 'none'; 
-                iframePlayer.src = ''; 
                 nativePlayer.pause();
-                nativePlayer.src = '';
+                nativePlayer.src = ''; // Полный сброс буфера, чтобы видео не догружалось в фоне
             }, 400);
             document.body.style.overflow = 'auto';
         }
@@ -398,7 +373,7 @@
             },
             ru: { 
                 "nav-vertical": "Вертикальные", "nav-horizontal": "Горизонтальные", "nav-faq": "FAQ", "btn-contact-nav": "Контакты", 
-                "hero-title-1": "Монтаж видео", "hero-title-2": "Для бренда", "hero-desc": "Создаю популярный вертикальный контент и профессиональный моушн-дизайн.", 
+                "hero-title-1": "Монтаж видео", "hero-title-2": "Для бренда", "hero-desc": "Создаю популярный vertical-контент и профессиональный моушн-дизайн.", 
                 "btn-work": "Смотреть работы", "btn-contact-main": "Связаться", "sec-vertical": "Вертикальные", "sec-horizontal": "Горизонтальные", 
                 "sec-faq": "Частые вопросы", "faq-q1": "Сколько стоит?", "faq-a1": "Зависит от сложности проекта, длины исходников и количества графики.",
                 "faq-q2": "Что нужно для начала?", "faq-a2": "Мне понадобятся ваши исходные материалы, краткое ТЗ и референсы.",
