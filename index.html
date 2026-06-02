@@ -50,12 +50,6 @@
             100% { background-position: 0% 50%; } 
         }
 
-        .noise { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1; opacity: 0.05; pointer-events: none; 
-            background-image: url('https://grainy-gradients.vercel.app/noise.svg'); 
-        }
-
         nav, header, main, footer { position: relative; z-index: 10; }
 
         .video-card {
@@ -153,7 +147,6 @@
     </style>
 </head>
 <body>
-    <div class="noise"></div>
 
     <!-- Модальное окно с чистым HTML5 видеоплеером -->
     <div id="video-modal">
@@ -310,7 +303,7 @@
             if (!isActive) item.classList.add('active');
         }
 
-        // Локальная база ссылок: стримим пережатые ролики напрямую из твоего репозитория GitHub
+        // Локальная база ссылок: файлы лежат прямо в корне репозитория
         const videoSources = [
             "./hor1.mp4",
             "./hor2.mp4",
