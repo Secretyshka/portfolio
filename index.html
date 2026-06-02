@@ -31,14 +31,11 @@
             html { font-size: 18px; } 
         }
 
-        /* Запрещаем скролл во все стороны на уровне html */
-        html, body { max-width: 100vw; overflow-x: hidden; }
-
         html { background-color: #050505; height: 100%; }
 
         body { 
             margin: 0; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; 
-            min-height: 100vh;
+            overflow-x: hidden; min-height: 100vh;
             padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
             background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505);
             background-size: 400% 400%;
@@ -140,6 +137,7 @@
         #lang-slider { transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .lang-active-text { color: #000 !important; }
 
+        /* ИСПРАВЛЕНИЯ МОБИЛЬНОЙ ВЕРСИИ */
         .btn-leifu { 
             background: #fff; color: #000; transition: 0.4s; font-weight: 800; 
             display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
@@ -151,12 +149,11 @@
             .section-header { flex-direction: column; align-items: flex-start !important; gap: 8px; }
             .section-number { font-size: 12px !important; color: rgba(255,255,255,0.2) !important; margin-bottom: 4px; }
             
+            /* Слово поработаем не выходит за экран */
             .footer-title-responsive { font-size: 14vw !important; word-wrap: break-word; padding: 0 5px; line-height: 1.1; }
             
+            /* Кнопки в герое более компактные для мобилок */
             header .flex-col { width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; }
-            
-            /* Предотвращаем выход больших букв за край экрана */
-            header h1 { font-size: 10vw !important; }
         }
     </style>
 </head>
@@ -167,8 +164,9 @@
         <div class="modal-overlay" onclick="closeVideo()"></div>
         <div class="modal-content-wrapper" id="modal-wrapper">
             <div class="close-modal" onclick="closeVideo()"><i class="fa-solid fa-xmark"></i></div>
-            <div class="modal-content">
-                <iframe id="video-player" width="100%" height="100%" src="" frameborder="0" allow="autoplay; fullscreen"></iframe>
+            <div class="modal-content flex items-center justify-center bg-black">
+                <iframe id="video-player" class="w-full h-full hidden" src="" frameborder="0" allow="autoplay; fullscreen"></iframe>
+                <video id="native-player" class="w-full h-full hidden" controls playsinline></video>
             </div>
         </div>
     </div>
@@ -202,7 +200,7 @@
 
     <header class="min-h-screen flex flex-col items-center justify-center relative px-6 text-center pt-20">
         <div class="z-10 w-full max-w-5xl">
-            <h1 class="text-[12vw] md:text-[110px] font-black mb-6 tracking-tighter uppercase leading-[0.9] italic break-words">
+            <h1 class="text-[12vw] md:text-[110px] font-black mb-6 tracking-tighter uppercase leading-[0.9] italic">
                 <span class="block blur-target" data-i18n="hero-title-1">Video editing</span>
                 <span class="text-outline block blur-target" data-i18n="hero-title-2">For your brand</span>
             </h1>
@@ -317,31 +315,44 @@
             if (!isActive) item.classList.add('active');
         }
 
-        // База данных ссылок: для EN — YouTube (с фиксом автоплея), для RU — Гугл Диск (встраиваемый плеер)
+        // База данных ссылок: EN использует YouTube iframe, RU использует прямые стриминговые ссылки Google Drive
         const videoSources = {
             en: [
-                "https://www.youtube.com/embed/Ed0TduU1-Wo?autoplay=1&mute=1", // Hor 1
-                "https://www.youtube.com/embed/NzOogImF21c?autoplay=1&mute=1", // Hor 2
-                "https://www.youtube.com/embed/20QAmZEfLzw?autoplay=1&mute=1", // Vert 1
-                "https://www.youtube.com/embed/ig3abtKCv9g?autoplay=1&mute=1"  // Vert 2
+                "https://www.youtube.com/embed/Ed0TduU1-Wo?autoplay=1&mute=1",
+                "https://www.youtube.com/embed/NzOogImF21c?autoplay=1&mute=1",
+                "https://www.youtube.com/embed/20QAmZEfLzw?autoplay=1&mute=1",
+                "https://www.youtube.com/embed/ig3abtKCv9g?autoplay=1&mute=1"
             ],
             ru: [
-                "https://drive.google.com/file/d/1hnkHezeaBysHx4lC0UQJEMsSD3DUzgNj/preview", // Hor 1
-                "https://drive.google.com/file/d/1dzwEvq1kZj9m2epil7Myr8t4h1NTaY0s/preview", // Hor 2
-                "https://drive.google.com/file/d/1fqdggj3_9nDR6OvbW3WOHchJJEqOZ1Gm/preview", // Vert 1
-                "https://drive.google.com/file/d/1xxbg6fzfuDvfvBqkIMyrIpWSmHKsF4hA/preview"  // Vert 2
+                "https://drive.google.com/uc?export=download&id=1hnkHezeaBysHx4lC0UQJEMsSD3DUzgNj",
+                "https://drive.google.com/uc?export=download&id=1dzwEvq1kZj9m2epil7Myr8t4h1NTaY0s",
+                "https://drive.google.com/uc?export=download&id=1fqdggj3_9nDR6OvbW3WOHchJJEqOZ1Gm",
+                "https://drive.google.com/uc?export=download&id=1xxbg6fzfuDvfvBqkIMyrIpWSmHKsF4hA"
             ]
         };
 
         function openVideo(index, type) {
             const modal = document.getElementById('video-modal');
-            const player = document.getElementById('video-player');
+            const iframePlayer = document.getElementById('video-player');
+            const nativePlayer = document.getElementById('native-player');
             const wrapper = document.getElementById('modal-wrapper');
             
-            player.src = videoSources[currentLang][index];
+            if (currentLang === 'en') {
+                // Включаем iframe плеер для YouTube
+                nativePlayer.classList.add('hidden');
+                iframePlayer.classList.remove('hidden');
+                iframePlayer.src = videoSources.en[index];
+            } else {
+                // Включаем чистый тег видео для Гугл Диска
+                iframePlayer.classList.add('hidden');
+                nativePlayer.classList.remove('hidden');
+                nativePlayer.src = videoSources.ru[index];
+                nativePlayer.play().catch(err => console.log("Автоплей заблокирован, пользователь запустит сам"));
+            }
             
             if (type === 'vertical') wrapper.classList.add('vertical');
             else wrapper.classList.remove('vertical');
+            
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('active'), 10);
             document.body.style.overflow = 'hidden';
@@ -349,9 +360,16 @@
 
         function closeVideo() {
             const modal = document.getElementById('video-modal');
-            const player = document.getElementById('video-player');
+            const iframePlayer = document.getElementById('video-player');
+            const nativePlayer = document.getElementById('native-player');
+            
             modal.classList.remove('active');
-            setTimeout(() => { modal.style.display = 'none'; player.src = ''; }, 400);
+            setTimeout(() => { 
+                modal.style.display = 'none'; 
+                iframePlayer.src = ''; 
+                nativePlayer.pause();
+                nativePlayer.src = '';
+            }, 400);
             document.body.style.overflow = 'auto';
         }
 
@@ -417,7 +435,6 @@
             else { btnRu.classList.add('lang-active-text'); btnEn.classList.remove('lang-active-text'); }
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const text = translations[lang][el.getAttribute('data-i18n')];
-                const icon = el.parentElement.querySelector('i');
                 if (el.classList.contains('blur-target')) applyBlurEffect(el, text);
                 else el.textContent = text;
             });
