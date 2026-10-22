@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#080b1a">
+    <meta name="theme-color" content="#050505">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
@@ -31,11 +31,22 @@
             html { font-size: 18px; } 
         }
 
-        /* 1. Исправление для iOS Safari и горизонтального переполнения */
+        /* 1. Глобальный фикс для iOS Safari (убираем жесткий фон, градиент делаем фоном всего документа) */
         html { 
-            background-color: #080b1a; 
+            background-color: transparent; 
             height: 100%; 
-            overflow-x: hidden;
+        }
+
+        /* Анимированный градиент с огромным запасом, чтобы перекрыть зоны overscroll */
+        html::before {
+            content: "";
+            position: fixed;
+            top: -20vh; bottom: -20vh; left: -20vw; right: -20vw;
+            z-index: -2;
+            background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+            pointer-events: none;
         }
 
         body { 
@@ -50,18 +61,6 @@
             position: relative;
         }
 
-        /* Фиксированный градиентный фон, который заходит под прозрачные панели Safari */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: -60px; /* Запас для инерционного скролла (rubber-banding) на iOS */
-            z-index: -1;
-            background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505);
-            background-size: 400% 400%;
-            animation: gradientMove 15s ease infinite;
-            pointer-events: none;
-        }
-
         section { scroll-margin-top: 110px; }
 
         @keyframes gradientMove { 
@@ -70,7 +69,7 @@
             100% { background-position: 0% 50%; } 
         }
 
-        /* 3. Прелоадер и стартовая анимация переходов */
+        /* Прелоадер и стартовая анимация переходов */
         #preloader {
             position: fixed;
             inset: 0;
@@ -119,7 +118,6 @@
             100% { transform: translateX(0); }
         }
 
-        /* Анимация входа элементов сайта после прелоадера */
         body.is-loading #navbar {
             transform: translate(-50%, -35px);
             opacity: 0;
@@ -186,13 +184,13 @@
         }
         #navbar.scrolled { top: calc(12px + var(--safe-top)); width: 90%; padding: 10px 24px; background: rgba(5, 5, 5, 0.65); }
 
-        /* 4. Стили FAQ и идеально отцентрированный крестик */
+        /* 2. Фикс обрезки текста в FAQ (убрали overflow: hidden у родителя) */
         .faq-item { 
             background: rgba(255, 255, 255, 0.03); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
             border-radius: 1.5rem; 
             margin-bottom: 1rem; 
-            overflow: hidden;
+            /* overflow: hidden УБРАНО чтобы текст не резался при рендере в Safari */
             transition: border-color 0.3s ease, background 0.3s ease;
         }
         .faq-item.active {
@@ -204,27 +202,26 @@
             display: flex; align-items: center; justify-content: space-between; 
             gap: 16px; cursor: pointer; 
         }
-        .faq-title { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); text-align: left; }
         
-        /* Геометрически ровный плюсик на CSS */
+        /* Заголовок адаптивно сжимается, предотвращая наезд на иконку и обрезку */
+        .faq-title { 
+            font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); text-align: left; 
+            flex: 1 1 auto; 
+            min-width: 0; 
+            word-wrap: break-word;
+        }
+        
         .faq-plus { 
             position: relative;
-            width: 24px;
-            height: 24px;
+            width: 24px; height: 24px;
             flex-shrink: 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            display: inline-flex; align-items: center; justify-content: center;
             opacity: 0.5;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
             transform-origin: center center;
         }
-        .faq-plus::before,
-        .faq-plus::after {
-            content: '';
-            position: absolute;
-            background-color: #ffffff;
-            border-radius: 2px;
+        .faq-plus::before, .faq-plus::after {
+            content: ''; position: absolute; background-color: #ffffff; border-radius: 2px;
         }
         .faq-plus::before { width: 14px; height: 2px; }
         .faq-plus::after { width: 2px; height: 14px; }
@@ -234,7 +231,6 @@
         .faq-item.active .faq-plus { transform: rotate(45deg); opacity: 1; }
         .faq-item.active .faq-content { max-height: 500px; }
 
-        /* 2. Исправление переноса длинных слов ("Поработаем?") */
         .blur-word { 
             display: inline-block; 
             white-space: pre-wrap; 
@@ -247,9 +243,7 @@
         .blur-word.visible { filter: blur(0px); opacity: 1; transform: translateY(0); }
         .text-outline .blur-word { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; }
 
-        .hero-title-responsive {
-            font-size: clamp(2.4rem, 9.5vw, 110px);
-        }
+        .hero-title-responsive { font-size: clamp(2.4rem, 9.5vw, 110px); }
         .footer-title-responsive {
             font-size: clamp(2.1rem, 8.5vw, 120px);
             max-width: 100%;
@@ -264,7 +258,13 @@
             margin-bottom: 0.5rem; position: relative;
         }
         .email-pill:hover { background: rgba(255, 255, 255, 0.07); transform: scale(1.05); border-color: rgba(255,255,255,0.3); }
-        .copy-hint { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 2rem; font-weight: 700; }
+        
+        .copy-hint { 
+            font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); 
+            margin-bottom: 2rem; font-weight: 700;
+            white-space: normal;
+            word-wrap: break-word;
+        }
 
         .social-link { transition: 0.4s; color: rgba(255,255,255,0.4); }
         .social-link:hover { color: #ffffff; transform: scale(1.1); }
@@ -291,7 +291,6 @@
 </head>
 <body class="is-loading">
 
-    <!-- Интро-прелоадер -->
     <div id="preloader">
         <img src="./logo small.png" alt="Logo" class="loader-logo">
         <div class="loader-bar">
@@ -299,7 +298,6 @@
         </div>
     </div>
 
-    <!-- Модальное окно с чистым HTML5 видеоплеером -->
     <div id="video-modal">
         <div class="modal-overlay" onclick="closeVideo()"></div>
         <div class="modal-content-wrapper" id="modal-wrapper">
@@ -426,13 +424,14 @@
         </section>
     </main>
 
-    <footer id="contact" class="py-24 px-4 sm:px-6 text-center border-t border-white/5 overflow-hidden">
+    <footer id="contact" class="py-24 px-4 sm:px-6 text-center border-t border-white/5">
         <h2 class="font-black uppercase mb-12 italic text-outline blur-target footer-title-responsive" data-i18n="footer-title">Let's work</h2>
         <div class="flex flex-col items-center">
             <div class="email-pill" id="copy-email" onclick="copyEmail()">
                 <i class="fa-solid fa-envelope" id="mail-icon"></i>
                 <span id="email-text">secretg836@gmail.com</span>
             </div>
+            <!-- Обрезка больше не появится, контейнер может свободно дышать -->
             <p class="copy-hint" data-i18n="copy-hint">Click to copy email</p>
             
             <div class="flex gap-8 md:gap-12" data-aos="zoom-in">
@@ -445,13 +444,11 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Инициализация FAQ с возможностью открывать несколько пунктов одновременно
         function toggleFaq(el) {
             const item = el.parentElement;
             item.classList.toggle('active');
         }
 
-        // Локальная база ссылок: файлы лежат прямо в корне репозитория
         const videoSources = [
             "./hor1.mp4",
             "./hor2.mp4",
@@ -562,9 +559,7 @@
             btt.classList.toggle('show', window.pageYOffset > 400);
         };
 
-        // Запуск страницы с синхронизацией прелоадера и анимации текста
         document.addEventListener('DOMContentLoaded', () => {
-            // Сначала выставляем язык без запуска blur-анимации, чтобы она не отработала за ширмой прелоадера
             const slider = document.getElementById('lang-slider');
             const btnEn = document.getElementById('txt-en');
             const btnRu = document.getElementById('txt-ru');
@@ -578,7 +573,6 @@
                 document.body.classList.remove('is-loading');
                 document.body.classList.add('page-ready');
 
-                // Запускаем фирменный blur-эффект текста и AOS ровно в момент открытия шторки
                 changeLang(currentLang, true);
                 AOS.init({ duration: 1100, once: true });
             }, 750);
