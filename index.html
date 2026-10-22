@@ -31,7 +31,6 @@
             html { font-size: 18px; } 
         }
 
-        /* Чистый черный фон без градиентов */
         html { 
             background-color: #000000; 
             height: 100%; 
@@ -94,7 +93,7 @@
         .play-icon {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 60px; height: 60px; background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px); border-radius: 50%;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; transition: all 0.4s ease; z-index: 2;
         }
@@ -115,17 +114,41 @@
         .close-modal { position: absolute; top: -50px; right: 0; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; font-size: 24px; }
         .close-modal:hover { color: #fff; transform: scale(1.1); }
 
+        /* Liquid Glass Navbar */
         #navbar {
             position: fixed; top: calc(24px + var(--safe-top)); left: 50%; transform: translate(-50%, 0);
-            width: 95%; max-width: 1400px; z-index: 100; background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px;
+            width: 95%; max-width: 1400px; z-index: 100; 
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0,0,0,0.3);
+            border-radius: 24px;
             padding: 16px 28px; transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex; align-items: center; opacity: 1;
         }
-        #navbar.scrolled { top: calc(12px + var(--safe-top)); width: 90%; padding: 10px 24px; background: rgba(0, 0, 0, 0.8); }
+        #navbar.scrolled { top: calc(12px + var(--safe-top)); width: 90%; padding: 10px 24px; background: rgba(0, 0, 0, 0.5); border-color: rgba(255, 255, 255, 0.15); }
 
         .nav-link { transition: color 0.3s ease; }
         .nav-link:hover { color: #ffffff; }
+
+        /* Liquid Glass Buttons */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap;
+        }
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 12px 32px rgba(0, 0, 0, 0.6);
+            transform: translateY(-3px) scale(1.02);
+        }
 
         .faq-item { 
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); 
@@ -165,25 +188,43 @@
         .hero-title-responsive { font-size: clamp(2.4rem, 9.5vw, 110px); }
         .footer-title-responsive { font-size: clamp(2.5rem, 10vw, 120px); max-width: 100%; overflow-wrap: break-word; line-height: 1.1; }
 
+        /* Liquid Glass Email Pill */
         .email-pill { 
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); 
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0,0,0,0.3);
             padding: 14px 28px; border-radius: 100px; display: inline-flex; align-items: center; 
             gap: 12px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             margin-bottom: 0.5rem; position: relative;
         }
-        .email-pill:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.05); border-color: rgba(255,255,255,0.4); }
+        .email-pill:hover { 
+            background: rgba(255, 255, 255, 0.08); transform: scale(1.05); 
+            border-color: rgba(255,255,255,0.25); 
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 8px 24px rgba(0,0,0,0.5);
+        }
         
         .copy-hint { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 2rem; font-weight: 700; word-wrap: break-word; }
 
         .social-link { transition: 0.4s; color: rgba(255,255,255,0.4); }
         .social-link:hover { color: #ffffff; transform: scale(1.1); }
-        #backToTop { position: fixed; bottom: calc(30px + var(--safe-bottom)); right: 30px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; z-index: 99; opacity: 0; visibility: hidden; transition: 0.4s; }
+        
+        #backToTop { 
+            position: fixed; bottom: calc(30px + var(--safe-bottom)); right: 30px; 
+            width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000; 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 99; opacity: 0; visibility: hidden; transition: 0.4s; 
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
         #backToTop.show { opacity: 1; visibility: visible; }
-        #lang-slider { transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        /* Language Toggle iOS Style */
+        #lang-slider { 
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2), inset 0 -1px 1px rgba(0,0,0,0.1);
+        }
         .lang-active-text { color: #000 !important; }
-
-        .btn-leifu { background: #fff; color: #000; border: 1px solid transparent; transition: 0.4s; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; }
-        .btn-leifu:hover { background: #000; color: #fff; border-color: rgba(255, 255, 255, 0.5); transform: translateY(-3px); }
 
         @media (max-width: 640px) {
             .section-header { flex-direction: column; align-items: flex-start !important; gap: 8px; }
@@ -221,17 +262,17 @@
                 <img src="./logo small.png" alt="Logo" class="h-full w-auto block">
             </a>
             
-            <div class="hidden lg:flex items-center bg-white/5 border border-white/10 px-1 py-1 rounded-full backdrop-blur-sm text-gray-400">
-                <a href="#horizontal" class="nav-link px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="nav-horizontal">Horizontal</a>
+            <div class="hidden lg:flex items-center gap-2 text-gray-400">
+                <a href="#horizontal" class="nav-link px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="nav-horizontal">Horizontal</a>
                 <div class="w-[1px] h-3 bg-white/10"></div>
-                <a href="#vertical" class="nav-link px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="nav-vertical">Vertical</a>
+                <a href="#vertical" class="nav-link px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="nav-vertical">Vertical</a>
                 <div class="w-[1px] h-3 bg-white/10"></div>
-                <a href="#faq" class="nav-link px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="nav-faq">FAQ</a>
+                <a href="#faq" class="nav-link px-3 py-2 text-[10px] font-black uppercase tracking-[0.2em]" data-i18n="nav-faq">FAQ</a>
             </div>
 
             <div class="flex items-center gap-4">
                 <a href="#contact" class="hidden sm:block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 nav-link" data-i18n="btn-contact-nav">Contact</a>
-                <div class="relative flex bg-white/5 p-1 rounded-xl border border-white/10 w-[80px] md:w-[90px] h-[32px] md:h-[36px] overflow-hidden">
+                <div class="relative flex bg-white/10 p-1 rounded-xl border border-white/10 w-[80px] md:w-[90px] h-[32px] md:h-[36px] overflow-hidden" style="box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);">
                     <div id="lang-slider" class="absolute top-1 left-1 bottom-1 w-[36px] md:w-[42px] bg-white rounded-lg z-0"></div>
                     <button onclick="changeLang('en')" class="relative z-10 w-1/2 text-[9px] md:text-[10px] font-black" id="txt-en">EN</button>
                     <button onclick="changeLang('ru')" class="relative z-10 w-1/2 text-[9px] md:text-[10px] font-black" id="txt-ru">RU</button>
@@ -249,11 +290,11 @@
                 </h1>
                 <p class="text-gray-400 text-base md:text-xl max-w-xl mx-auto mb-10 font-medium blur-target" data-i18n="hero-desc">High-end vertical content and cinematic motion design.</p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4 hero-actions">
-                    <a href="#horizontal" class="btn-leifu px-10 py-5 rounded-full uppercase tracking-widest text-[10px]">
+                    <a href="#horizontal" class="glass-btn px-10 py-5 rounded-full uppercase tracking-widest text-[10px] font-black">
                         <span data-i18n="btn-work">View Projects</span>
                         <i class="fa-solid fa-arrow-right text-[12px]"></i>
                     </a>
-                    <a href="#contact" class="px-10 py-5 rounded-full font-black uppercase tracking-widest text-[10px] border border-white/20 hover:border-white transition-all text-white" data-i18n="btn-contact-main">Contact Me</a>
+                    <a href="#contact" class="glass-btn px-10 py-5 rounded-full uppercase tracking-widest text-[10px] font-black" data-i18n="btn-contact-main">Contact Me</a>
                 </div>
             </div>
         </header>
@@ -392,7 +433,7 @@
             const text = document.getElementById('email-text');
             const pill = document.getElementById('copy-email');
             text.innerText = (currentLang === 'ru') ? "Скопировано!" : "Copied!";
-            pill.style.background = "rgba(255, 255, 255, 0.2)";
+            pill.style.background = "rgba(255, 255, 255, 0.15)";
             setTimeout(() => { 
                 text.innerText = email; 
                 pill.style.background = "rgba(255, 255, 255, 0.03)"; 
@@ -455,9 +496,6 @@
                 } else {
                     el.textContent = text;
                     
-                    // ХАРДКОРНЫЙ ФИКС ДЛЯ iOS SAFARI:
-                    // Прячем элемент, запрашиваем его высоту (заставляя браузер пересчитать геометрию страницы), и возвращаем обратно. 
-                    // Это 100% убивает баг с обрезанными краями слов при подмене текста.
                     const originalDisplay = el.style.display;
                     el.style.display = 'none';
                     void el.offsetHeight; 
