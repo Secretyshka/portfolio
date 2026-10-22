@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#080b1a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
@@ -23,23 +23,43 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
         
         :root {
-            --safe-top: env(safe-area-inset-top);
-            --safe-bottom: env(safe-area-inset-bottom);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
         @media (min-width: 1024px) {
             html { font-size: 18px; } 
         }
 
-        html { background-color: #050505; height: 100%; }
+        /* 1. Исправление для iOS Safari и горизонтального переполнения */
+        html { 
+            background-color: #080b1a; 
+            height: 100%; 
+            overflow-x: hidden;
+        }
 
         body { 
-            margin: 0; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; 
-            overflow-x: hidden; min-height: 100vh;
-            padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
+            margin: 0; 
+            color: #ffffff; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden; 
+            min-height: 100dvh;
+            padding-top: var(--safe-top); 
+            padding-bottom: var(--safe-bottom);
+            background: transparent;
+            position: relative;
+        }
+
+        /* Фиксированный градиентный фон, который заходит под прозрачные панели Safari */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -60px; /* Запас для инерционного скролла (rubber-banding) на iOS */
+            z-index: -1;
             background: linear-gradient(125deg, #050505, #0a1128, #1c0b2e, #050505);
             background-size: 400% 400%;
             animation: gradientMove 15s ease infinite;
+            pointer-events: none;
         }
 
         section { scroll-margin-top: 110px; }
@@ -48,6 +68,70 @@
             0% { background-position: 0% 50%; } 
             50% { background-position: 100% 50%; } 
             100% { background-position: 0% 50%; } 
+        }
+
+        /* 3. Прелоадер и стартовая анимация переходов */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #050505;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.7s;
+        }
+        #preloader.loaded {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-logo {
+            height: 44px;
+            width: auto;
+            animation: logoPulse 1.4s ease-in-out infinite alternate;
+        }
+        .loader-bar {
+            width: 120px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        .loader-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: #ffffff;
+            transform: translateX(-100%);
+            animation: progressSlide 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+        @keyframes logoPulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+        @keyframes progressSlide {
+            100% { transform: translateX(0); }
+        }
+
+        /* Анимация входа элементов сайта после прелоадера */
+        body.is-loading #navbar {
+            transform: translate(-50%, -35px);
+            opacity: 0;
+        }
+        .hero-actions {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+        }
+        body.page-ready .hero-actions {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         nav, header, main, footer { position: relative; z-index: 10; }
@@ -94,26 +178,84 @@
         .close-modal { position: absolute; top: -50px; right: 0; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; font-size: 24px; }
 
         #navbar {
-            position: fixed; top: calc(24px + var(--safe-top)); left: 50%; transform: translateX(-50%);
+            position: fixed; top: calc(24px + var(--safe-top)); left: 50%; transform: translate(-50%, 0);
             width: 95%; max-width: 1400px; z-index: 100; background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px;
-            padding: 16px 28px; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex; align-items: center;
+            padding: 16px 28px; transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; align-items: center; opacity: 1;
         }
         #navbar.scrolled { top: calc(12px + var(--safe-top)); width: 90%; padding: 10px 24px; background: rgba(5, 5, 5, 0.65); }
 
-        .faq-item { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1.5rem; margin-bottom: 1rem; overflow: hidden; }
-        .faq-trigger { width: 100%; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .faq-title { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); }
-        .faq-plus { font-size: 1.5rem; transition: 0.4s; opacity: 0.5; }
-        .faq-content { max-height: 0; overflow: hidden; transition: all 0.4s ease; }
+        /* 4. Стили FAQ и идеально отцентрированный крестик */
+        .faq-item { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 1.5rem; 
+            margin-bottom: 1rem; 
+            overflow: hidden;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .faq-item.active {
+            border-color: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .faq-trigger { 
+            width: 100%; padding: 24px 32px; 
+            display: flex; align-items: center; justify-content: space-between; 
+            gap: 16px; cursor: pointer; 
+        }
+        .faq-title { font-size: 1.1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); text-align: left; }
+        
+        /* Геометрически ровный плюсик на CSS */
+        .faq-plus { 
+            position: relative;
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.5;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            transform-origin: center center;
+        }
+        .faq-plus::before,
+        .faq-plus::after {
+            content: '';
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 2px;
+        }
+        .faq-plus::before { width: 14px; height: 2px; }
+        .faq-plus::after { width: 2px; height: 14px; }
+
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .faq-inner { padding: 0 32px 32px 32px; color: rgba(255, 255, 255, 0.5); line-height: 1.6; }
         .faq-item.active .faq-plus { transform: rotate(45deg); opacity: 1; }
         .faq-item.active .faq-content { max-height: 500px; }
 
-        .blur-word { display: inline-block; white-space: pre; filter: blur(12px); opacity: 0; transform: translateY(15px); transition: 0.8s ease-out; }
+        /* 2. Исправление переноса длинных слов ("Поработаем?") */
+        .blur-word { 
+            display: inline-block; 
+            white-space: pre-wrap; 
+            max-width: 100%;
+            filter: blur(12px); 
+            opacity: 0; 
+            transform: translateY(15px); 
+            transition: 0.8s ease-out; 
+        }
         .blur-word.visible { filter: blur(0px); opacity: 1; transform: translateY(0); }
         .text-outline .blur-word { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); color: transparent; }
+
+        .hero-title-responsive {
+            font-size: clamp(2.4rem, 9.5vw, 110px);
+        }
+        .footer-title-responsive {
+            font-size: clamp(2.1rem, 8.5vw, 120px);
+            max-width: 100%;
+            overflow-wrap: break-word;
+            line-height: 1.1;
+        }
 
         .email-pill { 
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); 
@@ -126,7 +268,7 @@
 
         .social-link { transition: 0.4s; color: rgba(255,255,255,0.4); }
         .social-link:hover { color: #ffffff; transform: scale(1.1); }
-        #backToTop { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; z-index: 99; opacity: 0; visibility: hidden; transition: 0.4s; }
+        #backToTop { position: fixed; bottom: calc(30px + var(--safe-bottom)); right: 30px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000; display: flex; align-items: center; justify-content: center; z-index: 99; opacity: 0; visibility: hidden; transition: 0.4s; }
         #backToTop.show { opacity: 1; visibility: visible; }
         #lang-slider { transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .lang-active-text { color: #000 !important; }
@@ -141,12 +283,21 @@
         @media (max-width: 640px) {
             .section-header { flex-direction: column; align-items: flex-start !important; gap: 8px; }
             .section-number { font-size: 12px !important; color: rgba(255,255,255,0.2) !important; margin-bottom: 4px; }
-            .footer-title-responsive { font-size: 14vw !important; word-wrap: break-word; padding: 0 5px; line-height: 1.1; }
             header .flex-col { width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; }
+            .faq-trigger { padding: 20px 24px; }
+            .faq-inner { padding: 0 24px 24px 24px; }
         }
     </style>
 </head>
-<body>
+<body class="is-loading">
+
+    <!-- Интро-прелоадер -->
+    <div id="preloader">
+        <img src="./logo small.png" alt="Logo" class="loader-logo">
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
 
     <!-- Модальное окно с чистым HTML5 видеоплеером -->
     <div id="video-modal">
@@ -188,12 +339,12 @@
 
     <header class="min-h-screen flex flex-col items-center justify-center relative px-6 text-center pt-20">
         <div class="z-10 w-full max-w-5xl">
-            <h1 class="text-[12vw] md:text-[110px] font-black mb-6 tracking-tighter uppercase leading-[0.9] italic">
+            <h1 class="hero-title-responsive font-black mb-6 tracking-tighter uppercase leading-[0.9] italic">
                 <span class="block blur-target" data-i18n="hero-title-1">Video editing</span>
                 <span class="text-outline block blur-target" data-i18n="hero-title-2">For your brand</span>
             </h1>
             <p class="text-gray-400 text-base md:text-xl max-w-xl mx-auto mb-10 font-medium blur-target" data-i18n="hero-desc">High-end vertical content and cinematic motion design.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 hero-actions">
                 <a href="#horizontal" class="btn-leifu px-10 py-5 rounded-full uppercase tracking-widest text-[10px]">
                     <span data-i18n="btn-work">View Projects</span>
                     <i class="fa-solid fa-arrow-right text-[12px]"></i>
@@ -211,11 +362,11 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div data-aos="fade-up" class="video-card aspect-video" onclick="openVideo(0, 'horizontal')">
-                    <img src="./hor1.png">
+                    <img src="./hor1.png" alt="Horizontal project 1">
                     <div class="play-icon"><i class="fa-solid fa-play"></i></div>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="200" class="video-card aspect-video" onclick="openVideo(1, 'horizontal')">
-                    <img src="./hor2.png">
+                    <img src="./hor2.png" alt="Horizontal project 2">
                     <div class="play-icon"><i class="fa-solid fa-play"></i></div>
                 </div>
             </div>
@@ -228,11 +379,11 @@
             </div>
             <div class="grid grid-cols-2 gap-6 md:gap-10 max-w-[700px] w-full">
                 <div data-aos="fade-up" class="video-card aspect-[9/16]" onclick="openVideo(2, 'vertical')">
-                    <img src="./vert1.png">
+                    <img src="./vert1.png" alt="Vertical project 1">
                     <div class="play-icon"><i class="fa-solid fa-play"></i></div>
                 </div>
                 <div data-aos="fade-up" data-aos-delay="200" class="video-card aspect-[9/16]" onclick="openVideo(3, 'vertical')">
-                    <img src="./vert2.png">
+                    <img src="./vert2.png" alt="Vertical project 2">
                     <div class="play-icon"><i class="fa-solid fa-play"></i></div>
                 </div>
             </div>
@@ -247,7 +398,7 @@
                 <div class="faq-item" data-aos="fade-up">
                     <div class="faq-trigger" onclick="toggleFaq(this)">
                         <span class="faq-title" data-i18n="faq-q1">How much does the service cost?</span>
-                        <span class="faq-plus">+</span>
+                        <span class="faq-plus"></span>
                     </div>
                     <div class="faq-content">
                         <div class="faq-inner" data-i18n="faq-a1">The price depends on the complexity of the project, the length of the footage, and the density of motion graphics. Contact me for a personal quote.</div>
@@ -256,7 +407,7 @@
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
                     <div class="faq-trigger" onclick="toggleFaq(this)">
                         <span class="faq-title" data-i18n="faq-q2">What do I need to get started?</span>
-                        <span class="faq-plus">+</span>
+                        <span class="faq-plus"></span>
                     </div>
                     <div class="faq-content">
                         <div class="faq-inner" data-i18n="faq-a2">I will need your source footage, a brief description of the task, and any references or branding materials you have.</div>
@@ -265,7 +416,7 @@
                 <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
                     <div class="faq-trigger" onclick="toggleFaq(this)">
                         <span class="faq-title" data-i18n="faq-q3">How long does it take?</span>
-                        <span class="faq-plus">+</span>
+                        <span class="faq-plus"></span>
                     </div>
                     <div class="faq-content">
                         <div class="faq-inner" data-i18n="faq-a3">Usually, a vertical video takes 1-3 days, while a complex horizontal project or motion design can take up to a week.</div>
@@ -275,8 +426,8 @@
         </section>
     </main>
 
-    <footer id="contact" class="py-24 px-6 text-center border-t border-white/5">
-        <h2 class="text-[12vw] md:text-[120px] font-black uppercase mb-12 italic text-outline blur-target footer-title-responsive" data-i18n="footer-title">Let's work</h2>
+    <footer id="contact" class="py-24 px-4 sm:px-6 text-center border-t border-white/5 overflow-hidden">
+        <h2 class="font-black uppercase mb-12 italic text-outline blur-target footer-title-responsive" data-i18n="footer-title">Let's work</h2>
         <div class="flex flex-col items-center">
             <div class="email-pill" id="copy-email" onclick="copyEmail()">
                 <i class="fa-solid fa-envelope" id="mail-icon"></i>
@@ -294,13 +445,10 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1200, once: true });
-
+        // Инициализация FAQ с возможностью открывать несколько пунктов одновременно
         function toggleFaq(el) {
             const item = el.parentElement;
-            const isActive = item.classList.contains('active');
-            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-            if (!isActive) item.classList.add('active');
+            item.classList.toggle('active');
         }
 
         // Локальная база ссылок: файлы лежат прямо в корне репозитория
@@ -316,7 +464,6 @@
             const nativePlayer = document.getElementById('native-player');
             const wrapper = document.getElementById('modal-wrapper');
             
-            // Задаем источник и запускаем воспроизведение
             nativePlayer.src = videoSources[index];
             nativePlayer.play().catch(err => console.log("Автоплей остановлен браузером, юзер запустит сам"));
             
@@ -336,7 +483,7 @@
             setTimeout(() => { 
                 modal.style.display = 'none'; 
                 nativePlayer.pause();
-                nativePlayer.src = ''; // Полный сброс буфера, чтобы видео не догружалось в фоне
+                nativePlayer.src = '';
             }, 400);
             document.body.style.overflow = 'auto';
         }
@@ -415,7 +562,27 @@
             btt.classList.toggle('show', window.pageYOffset > 400);
         };
 
-        document.addEventListener('DOMContentLoaded', () => changeLang(currentLang, true));
+        // Запуск страницы с синхронизацией прелоадера и анимации текста
+        document.addEventListener('DOMContentLoaded', () => {
+            // Сначала выставляем язык без запуска blur-анимации, чтобы она не отработала за ширмой прелоадера
+            const slider = document.getElementById('lang-slider');
+            const btnEn = document.getElementById('txt-en');
+            const btnRu = document.getElementById('txt-ru');
+            slider.style.transform = (currentLang === 'en') ? 'translateX(0)' : 'translateX(100%)';
+            if (currentLang === 'en') { btnEn.classList.add('lang-active-text'); btnRu.classList.remove('lang-active-text'); }
+            else { btnRu.classList.add('lang-active-text'); btnEn.classList.remove('lang-active-text'); }
+
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.classList.add('loaded');
+                document.body.classList.remove('is-loading');
+                document.body.classList.add('page-ready');
+
+                // Запускаем фирменный blur-эффект текста и AOS ровно в момент открытия шторки
+                changeLang(currentLang, true);
+                AOS.init({ duration: 1100, once: true });
+            }, 750);
+        });
     </script>
 </body>
 </html>
